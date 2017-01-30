@@ -1,0 +1,9 @@
+**/*~
+**/\#*#
+.emacs.d/tramp
+.emacs.d/.save/
+.emacs.d/auto-save-list/
+.emacs.d/elpa/
+.emacs.d*/server/
+.tmux/plugins/
+.tmux/resurrect/
