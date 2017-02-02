@@ -1,3 +1,75 @@
-#alias emacs="cygstart /cygdrive/c/~Nonstall/Editoren/emacs/bin/runemacs.exe -c -n"
-#alias emacs="cygstart C:\~NoInstall\Editoren\emacs\bin\emacsclientw.exe -na "C:\~NoInstall\Editoren\emacs\bin\runemacs.exe" -c -n"
+# git functions / prompt
+source ~/.git-prompt.sh
+
+txtblk='\e[0;30m' # Black - Regular
+txtred='\e[0;31m' # Red
+txtgrn='\e[0;32m' # Green
+txtylw='\e[0;33m' # Yellow
+txtblu='\e[0;34m' # Blue
+txtpur='\e[0;35m' # Purple
+txtcyn='\e[0;36m' # Cyan
+txtwht='\e[0;37m' # White
+bldblk='\e[1;30m' # Black - Bold
+bldred='\e[1;31m' # Red
+bldgrn='\e[1;32m' # Green
+bldylw='\e[1;33m' # Yellow
+bldblu='\e[1;34m' # Blue
+bldpur='\e[1;35m' # Purple
+bldcyn='\e[1;36m' # Cyan
+bldwht='\e[1;37m' # White
+unkblk='\e[4;30m' # Black - Underline
+undred='\e[4;31m' # Red
+undgrn='\e[4;32m' # Green
+undylw='\e[4;33m' # Yellow
+undblu='\e[4;34m' # Blue
+undpur='\e[4;35m' # Purple
+undcyn='\e[4;36m' # Cyan
+undwht='\e[4;37m' # White
+bakblk='\e[40m'   # Black - Background
+bakred='\e[41m'   # Red
+badgrn='\e[42m'   # Green
+bakylw='\e[43m'   # Yellow
+bakblu='\e[44m'   # Blue
+bakpur='\e[45m'   # Purple
+bakcyn='\e[46m'   # Cyan
+bakwht='\e[47m'   # White
+txtrst='\e[0m'    # Text Reset
+
+PROMPT_BEFORE="$txtcyn\u@\h $txtwht\w$txtrst"
+PROMPT_AFTER="\\n\\\$ "
+PROMPT_COMMAND='__git_ps1 "$PROMPT_BEFORE" "$PROMPT_AFTER"'
+
+export GIT_PS1_SHOWDIRTYSTATE="true"
+export GIT_PS1_SHOWSTASHSTATE="true"
+export GIT_PS1_SHOWUNTRACKEDFILES="true"
+export GIT_PS1_SHOWUPSTREAM="auto"
+export GIT_PS1_SHOWCOLORHINTS="true"
+
+# Start the graphical emacs within Windows
 alias emacs="cygstart /cygdrive/c/~NoInstall/Editoren/emacs/bin/emacsclientw.exe -na \"C:/~NoInstall/Editoren/emacs/bin/runemacs.exe\" -c -n"
+
+# Some useful aliases
+alias grep='grep --color=auto --exclude==*.pyc'
+alias du='du -c -h'
+alias df='df -h'
+
+# ls
+alias ls='ls -hFX --color=auto --group-directories-first'
+alias ll='ls -l'
+
+# cd
+alias back='cd $OLDPWD' # same as 'cd -'?
+alias ..='cd ..'
+
+# Cygwin
+# TODO: Add a check if we are in cygwin bash
+alias c='cd /cygdrive/c'
+alias h='cd ~'
+
+# safety features
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+alias ln='ln -i'
+
+
