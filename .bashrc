@@ -1,5 +1,8 @@
+# bash prompt including git branch and python virtualenv
+source ~/.bash-prompt
+
 # git functions / prompt
-source ~/.git-prompt.sh
+#source ~/.git-prompt
 
 txtblk='\e[0;30m' # Black - Regular
 txtred='\e[0;31m' # Red
@@ -35,15 +38,15 @@ bakcyn='\e[46m'   # Cyan
 bakwht='\e[47m'   # White
 txtrst='\e[0m'    # Text Reset
 
-PROMPT_BEFORE="$txtcyn\u@\h $txtwht\w$txtrst"
-PROMPT_AFTER="\\n\\\$ "
-PROMPT_COMMAND='__git_ps1 "$PROMPT_BEFORE" "$PROMPT_AFTER"'
+#PROMPT_BEFORE="$txtcyn\u@\h $txtwht\w$txtrst"
+#PROMPT_AFTER="\\n\\\$ "
+#PROMPT_COMMAND='__git_ps1 "$PROMPT_BEFORE" "$PROMPT_AFTER"'
 
-export GIT_PS1_SHOWDIRTYSTATE="true"
-export GIT_PS1_SHOWSTASHSTATE="true"
-export GIT_PS1_SHOWUNTRACKEDFILES="true"
-export GIT_PS1_SHOWUPSTREAM="auto"
-export GIT_PS1_SHOWCOLORHINTS="true"
+#export GIT_PS1_SHOWDIRTYSTATE="true"
+#export GIT_PS1_SHOWSTASHSTATE="true"
+#export GIT_PS1_SHOWUNTRACKEDFILES="true"
+#export GIT_PS1_SHOWUPSTREAM="auto"
+#export GIT_PS1_SHOWCOLORHINTS="true"
 
 # Start the graphical emacs within Windows
 alias emacs="cygstart /cygdrive/c/~NoInstall/Editoren/emacs/bin/emacsclientw.exe -na \"C:/~NoInstall/Editoren/emacs/bin/runemacs.exe\" -c -n"
@@ -54,17 +57,18 @@ alias du='du -c -h'
 alias df='df -h'
 
 # ls
+alias l='ls -hals --color=auto --group-directories-first'
 alias ls='ls -hFX --color=auto --group-directories-first'
 alias ll='ls -l'
 
 # cd
 alias back='cd $OLDPWD' # same as 'cd -'?
 alias ..='cd ..'
+alias h='cd ~'
 
 # Cygwin
 # TODO: Add a check if we are in cygwin bash
 alias c='cd /cygdrive/c'
-alias h='cd ~'
 
 # safety features
 alias cp='cp -i'
