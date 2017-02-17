@@ -8,6 +8,9 @@
 ;; lockfiles are evil.
 (setq create-lockfiles nil)
 
+;; Non-working auto-save is evil, too.
+(setq auto-save-default nil)
+
 ;; also tabs are evil
 (setq-default indent-tabs-mode nil)
 ;; Indent by 4 spaces

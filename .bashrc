@@ -69,6 +69,7 @@ alias h='cd ~'
 # Cygwin
 # TODO: Add a check if we are in cygwin bash
 alias c='cd /cygdrive/c'
+alias w='cd /cygdrive/c/_ws'
 
 # safety features
 alias cp='cp -i'

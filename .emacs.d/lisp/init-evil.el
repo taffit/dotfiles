@@ -70,6 +70,11 @@
     ;; As found on http://bling.github.io/blog/2013/10/27/emacs-as-my-leader-vim-survival-guide/
     (defadvice evil-ex-search-next (after advice-for-evil-ex-search-next activate)
       (evil-scroll-line-to-center (line-number-at-pos)))
+
+    ;; Defining the word boundaries like in vim
+    ;; Found here: http://emacs.stackexchange.com/a/20717/14494
+    (with-eval-after-load 'evil
+	(defalias #'forward-evil-word #'forward-evil-symbol))
   )
 )
 
