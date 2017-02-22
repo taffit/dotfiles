@@ -49,7 +49,7 @@ txtrst='\e[0m'    # Text Reset
 #export GIT_PS1_SHOWCOLORHINTS="true"
 
 # Start the graphical emacs within Windows
-alias emacs="cygstart /cygdrive/c/~NoInstall/Editoren/emacs/bin/emacsclientw.exe -na \"C:/~NoInstall/Editoren/emacs/bin/runemacs.exe\" -c -n"
+alias emacs="cygstart /c/~NoInstall/Editoren/emacs/bin/emacsclientw.exe -na \"C:/~NoInstall/Editoren/emacs/bin/runemacs.exe\" -c -n"
 
 # Some useful aliases
 alias grep='grep --color=auto --exclude==*.pyc'
@@ -68,8 +68,8 @@ alias h='cd ~'
 
 # Cygwin
 # TODO: Add a check if we are in cygwin bash
-alias c='cd /cygdrive/c'
-alias w='cd /cygdrive/c/_ws'
+alias c='cd /c'
+alias w='cd /c/_ws'
 
 # safety features
 alias cp='cp -i'

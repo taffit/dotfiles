@@ -71,6 +71,26 @@
   )
 )
 
+;; For autohotkey-scripts I'm using this one: https://github.com/ralesi/ahk-mode
+(use-package ahk-mode
+  :defer t)
+
+;; Enabling markdown / github-flavoured markdown
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.mkd\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+
+;; Enabling reStructuredText on certain file-types automatically
+(setq auto-mode-alist
+      (append '(("\\.txt\\'" . rst-mode)
+                ("\\.rst\\'" . rst-mode)
+                ("\\.rest\\'" . rst-mode)) auto-mode-alist))
+
 ;;  From: https://www.reddit.com/r/emacs/comments/1s9tfk/emacs_server_mode_on_windows/
 ;;
 ;;  This makes Emacs ignore the "-e (make-frame-visible)" 
