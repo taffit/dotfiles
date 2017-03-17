@@ -13,7 +13,15 @@ For getting them up and running:
 - for tmux you have to install the plugin manager [tmp](https://github.com/tmux-plugins/tpm) (mostly cloning)
 - then you can hit <kbd>prefix</kbd>`-I` (capital `I` as in *I*nstall) in order to download and activate the plugins
 
-After adjusting the cygdrive mapping in cygwin as described in [A Proper Cygwin Environment](http://randomartifacts.blogspot.de/2012/10/a-proper-cygwin-environment.html) I could try it once more if the symbolic links are working correctly and emacs finds its folders.
+### TODOs / ideas
+
+- After adjusting the cygdrive mapping in cygwin as described in [A Proper Cygwin Environment](http://randomartifacts.blogspot.de/2012/10/a-proper-cygwin-environment.html) I could try it once more if the symbolic links are working correctly and emacs finds its folders.
+- Add all the vim files
+- Some script to automate the linking process after cloning (see maybe Aaron Bieber's repo)
+- Split up bash-configuration:
+    - aliases in their own file
+    - check for cygwin and put all cygwin specific settings there
+    - system-specific settings in their own file (i.e. work vs. home)
 
 TODOs:
 
