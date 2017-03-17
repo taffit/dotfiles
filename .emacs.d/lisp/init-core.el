@@ -56,6 +56,16 @@
 (global-linum-mode 1)
 (add-hook 'find-file-hook (lambda () (linum-mode 1)))
 (setq linum-format "%4d\u2502")
+;; As found here: https://www.reddit.com/r/vim/comments/1vllqy/what_is_emacs_evilmode_missing/ceuktcz/
+;;; Replicate vim's line number properties:
+(defun linum-format-func (line)
+  (let ((w (length
+             (number-to-string (count-lines (point-min) (point-max))))))
+    (propertize
+      (format
+        (if (> w 3) (concat "%" (number-to-string w) "d ")
+          "%3d ") line) 'face 'linum)))
+(setq linum-format 'linum-format-func)
 
 ;; Disable vertical scrollbars in all frames.
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))

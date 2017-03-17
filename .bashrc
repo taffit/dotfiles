@@ -64,6 +64,8 @@ alias ll='ls -l'
 # cd
 alias back='cd $OLDPWD' # same as 'cd -'?
 alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
 alias h='cd ~'
 
 # Cygwin
@@ -77,4 +79,8 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias ln='ln -i'
 
+# For the python shell in cygwin
+#export PYTHONUNBUFFERED=1
 
+# For preventing the BrokenFilesystemwarning in cygwin / werkzeug
+export PYTHONIOENCODING=utf-8

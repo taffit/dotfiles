@@ -15,3 +15,15 @@ For getting them up and running:
 
 After adjusting the cygdrive mapping in cygwin as described in [A Proper Cygwin Environment](http://randomartifacts.blogspot.de/2012/10/a-proper-cygwin-environment.html) I could try it once more if the symbolic links are working correctly and emacs finds its folders.
 
+TODOs:
+
+- be inspired by some tools / dotfiles discovered [here](https://dotfiles.github.io/) or [here](http://dotshare.it/)
+- add vim-files
+- remove `ls`-alias
+- put aliases in their own file
+- distinguish between cygwin / bash / zsh / ssh-session
+- [LiquidPrompt](https://github.com/nojhan/liquidprompt)?
+- Make it work with symbolic links again, maybe by using [GNU Stow](https://www.gnu.org/software/stow/) or some other tool from the sites above?
+
+[Good introduction](https://medium.com/@webprolific/getting-started-with-dotfiles-43c3602fd789#.v3g4lz8s8), btw...
+
