@@ -225,5 +225,19 @@
     (set-fringe-style '(8 . 0)))
 
 
+;; Taken from https://juanjoalvarez.net/es/detail/2014/sep/19/vim-emacsevil-chaotic-migration-guide/
+;; Visual hint for column
+(add-hook 'text-mode-hook (lambda ()
+                            (fci-mode)
+                            (set-fill-column 80)))
+
+(add-hook 'markdown-mode-hook (lambda ()
+                            (fci-mode)
+                            (set-fill-column 80)))
+
+(add-hook 'python-mode-hook (lambda ()
+                            (fci-mode)
+                            (set-fill-column 79)))
+
 (provide 'init-core)
 

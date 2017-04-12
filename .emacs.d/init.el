@@ -48,6 +48,9 @@
 ;;(require 'init-functions)
 
 ;; Packages
+(use-package fill-column-indicator
+  :ensure t)
+
 (use-package magit
   :defer t)
 
