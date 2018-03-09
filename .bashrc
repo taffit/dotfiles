@@ -49,7 +49,8 @@ txtrst='\e[0m'    # Text Reset
 #export GIT_PS1_SHOWCOLORHINTS="true"
 
 # Start the graphical emacs within Windows
-alias emacs="cygstart /c/~NoInstall/Editoren/emacs/bin/emacsclientw.exe -na \"C:/~NoInstall/Editoren/emacs/bin/runemacs.exe\" -c -n"
+alias emacs="cygstart /c/~NoInstall/Editoren/emacs-25.3/bin/emacsclientw.exe -na \"C:/~NoInstall/Editoren/emacs-25.3/bin/runemacs.exe\" -c -n"
+alias semacs="EMACS_USER_DIRECTORY=~/.spacemacs.d cygstart /c/~NoInstall/Editoren/emacs-25.3/bin/emacsclientw.exe -na \"C:/~NoInstall/Editoren/emacs-25.3/bin/runemacs.exe\" -c -n"
 
 # Some useful aliases
 alias grep='grep --color=auto --exclude==*.pyc'
@@ -71,7 +72,7 @@ alias h='cd ~'
 # Cygwin
 # TODO: Add a check if we are in cygwin bash
 alias c='cd /c'
-alias w='cd /c/_ws'
+alias w='cd /c/~ws'
 
 # safety features
 alias cp='cp -i'
@@ -84,3 +85,11 @@ alias ln='ln -i'
 
 # For preventing the BrokenFilesystemwarning in cygwin / werkzeug
 export PYTHONIOENCODING=utf-8
+
+# Set visual bell style in bash (right mouse click -> options in mintty)
+set bell-style visible
+
+# Starting emacs with spacemacs configuration
+# As described here: https://emacs.stackexchange.com/a/20508/14494
+#alias semacs='EMACS_USER_DIRECTORY=~/.spacemacs.d emacs'
+
