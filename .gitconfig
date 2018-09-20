@@ -1,0 +1,37 @@
+
+[alias]
+	co = checkout
+	cob = checkout -b
+	cof = checkout -f
+	cm = commit
+	st = status
+	s = status -s
+	b = branch
+	br = branch
+	bv = branch -v
+	bd = branch -d
+    diff = diff --word-diff
+    dc = diff --cached
+	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+	graph = log --graph --all --decorate --stat --date=iso
+	stats = shortlog -sn --all --no-merges
+	type = cat-file -t
+	dump = cat-file -p
+	alias = config --get-regexp ^alias\\.
+	praise = blame
+	mylog = log --all --oneline --no-merges --author=david.siller@asset-metrix.com
+	undo = reset --soft HEAD^
+	mr = !sh -c 'git fetch $1 merge-requests/$2/head:mr-$1-$2 && git checkout mr-$1-$2' -
+    ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+    lf = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    changes = !git log --pretty=format:\"%h %ad | %s%d [%cn]\" --graph --date=short "${1+$1@\\{0\\}..$1@\\{upstream\\}}" "${1-@\\{0\\}..@\\{upstream\\}}" 
+    c = !git log --oneline --decorate $1@{upstream}
+    filelog = log -u
+    fl = log -u
+    assume = update-index --assume-unchanged
+    unassume = update-index --no-assume-unchanged
+    assumed = "!git ls-files -v | grep ^h | cut -c 3-"
+    gtree= log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+[credential]
+    helper = manager
+

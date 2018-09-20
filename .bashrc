@@ -48,9 +48,22 @@ txtrst='\e[0m'    # Text Reset
 #export GIT_PS1_SHOWUPSTREAM="auto"
 #export GIT_PS1_SHOWCOLORHINTS="true"
 
+# Doing some OS-related settings
+# The following check was taken from https://stackoverflow.com/a/3466183/1785391
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    CYGWIN*)    machine=Cygwin;;
+    MINGW*)     machine=MinGw;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
+#echo ${machine}
 # Start the graphical emacs within Windows
-alias emacs="cygstart /c/~NoInstall/Editoren/emacs-25.3/bin/emacsclientw.exe -na \"C:/~NoInstall/Editoren/emacs-25.3/bin/runemacs.exe\" -c -n"
-alias semacs="EMACS_USER_DIRECTORY=~/.spacemacs.d cygstart /c/~NoInstall/Editoren/emacs-25.3/bin/emacsclientw.exe -na \"C:/~NoInstall/Editoren/emacs-25.3/bin/runemacs.exe\" -c -n"
+if [ ${machine} == 'Cygwin' ]; then
+  alias emacs="cygstart /c/~NoInstall/Editoren/emacs-25.3/bin/emacsclientw.exe -na \"C:/~NoInstall/Editoren/emacs-25.3/bin/runemacs.exe\" -c -n"
+  alias semacs="EMACS_USER_DIRECTORY=~/.spacemacs.d cygstart /c/~NoInstall/Editoren/emacs-25.3/bin/emacsclientw.exe -na \"C:/~NoInstall/Editoren/emacs-25.3/bin/runemacs.exe\" -c -n";
+fi
 
 # Some useful aliases
 alias grep='grep --color=auto --exclude==*.pyc'

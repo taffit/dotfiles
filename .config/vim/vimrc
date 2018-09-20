@@ -1,0 +1,162 @@
+
+" Useful shortcuts and bits
+" Reloading the .vimrc-file, one of the following helps
+" :source ~/.vimrc
+" :source $MYVIMRC
+
+set encoding=utf-8         " Set the buffer encoding
+set fileencoding=utf-8     " Set the file encoding
+filetype indent on         " Indent automatically depending on filetype
+set autoindent             " always set autoindenting on
+set copyindent             " copy the previous indentation on autoindenting
+set number                 " Turn on line numbering. Turn it off with "set nonu"
+set tabstop=4              " a tab is x spaces
+set shiftwidth=4           " indents will have a width of x characters
+set softtabstop=4          " sets the number of columns for a TAB
+set expandtab              " always use spaces instead of tab characters
+set shiftround             " use multiple of shiftwidth when indenting with '<' and '>'
+set history=1000           " bigger history
+set scrolloff=3            " keeping more context on scrolling outside
+set ruler                  " enabling the ruler in the lower right (line, col, %)
+set visualbell             " enabling visual bell instead of bell 
+syntax enable              " Set syntax on
+set background=dark        " Set a dark background
+set ignorecase             " Case insensitive search
+set hlsearch               " Highlight search
+set incsearch              " show search matches as you type
+" Removes the highlightning of a search term (and removes the :noh in the status)
+nnoremap <CR> :noh<CR>:<backspace>
+nnoremap n nzz             " Centering a find
+set autochdir              " Change directory to the current buffer when opening files.
+
+" Setting row length column
+highlight ColorColumn ctermbg=gray
+set colorcolumn=80
+
+" Creating splits on the right or below
+set splitbelow
+set splitright
+
+" if the line wraps, it goes to next line instead of jumping to next row
+nnoremap j gj
+nnoremap k gk
+
+" Redefining the <leader>-key to <Space>
+nnoremap <Space> <nop>
+let mapleader = "\<Space>"
+
+" <leader>q will close the current buffer without destroying the window
+nnoremap <leader>q :bp<bar>sp<bar>silent!<Space>bn<bar>bd<CR>
+" <leader>w to save the file
+nnoremap <leader>w :w<CR>
+" This shortcut is used to open MRUs
+nnoremap <leader>o :browse oldfiles<CR>
+" <leader>e toggles the built in explorer
+" Starting with a space it shouldn't add the window to the buffer list?
+nnoremap <leader>e :<Space>Lexplore<CR>
+" <leader>cd changes the directory to the one of the current buffer
+nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
+" Hitting <leader>b will invoke buffers und then you have to select just the number
+":nnoremap <leader>b :buffers<CR>:buffer<Space>
+nnoremap <leader>b :ls<CR>:b<Space>
+
+" Easier split navigation using Ctrl-jkhl instead of Ctrl-w Ctrl-jkhl
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-H> <C-W><C-H>
+nnoremap <C-L> <C-W><C-L>
+
+" Alt-Shift-j/k deletes blank line below/above, and Alt-j/k inserts.
+nnoremap <silent><A-S-j> m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
+nnoremap <silent><A-S-k> m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
+nnoremap <silent><A-j> :set paste<CR>m`o<Esc>``:set nopaste<CR>
+nnoremap <silent><A-k> :set paste<CR>m`O<Esc>``:set nopaste<CR>
+
+" A more intuitive way: oo or OO
+nmap oo o<Esc>k
+nmap OO O<Esc>j
+
+" Increment / decrement number under cursor with <leader>= / <leader>- instead of
+" default Ctrl-A / Ctrl-X
+nnoremap <Leader>= <C-a>
+nnoremap <Leader>- <C-x>
+
+" Shortcut to rapidly toggle `set list`
+nmap <Leader><Leader>l :set list!<CR>
+
+" Use the same symbols as TextMate for tabstops and EOLs
+"set listchars=trail:·,tab:\|\ ,eol:¬
+set listchars=trail:·,precedes:«,extends:»,eol:¬,tab:\|\ 
+
+"Invisible character colors 
+highlight NonText guifg=#C2D5DF
+highlight SpecialKey guifg=#C2D5DF
+syn match space /\s/
+highlight space guifg=#C2D5DF
+
+" ------------------------
+" --- Working with tabs
+" ------------------------
+" --- Command --- description
+" :tabe[dit] filename	Open filename in a new tab
+" ctrl-W T	        Move current split window into its own tab
+" :q	                Close window, closing tab if it contains a single window
+" :tabc[lose]	        Close the current tab page and all its windows
+" :tabo[nly]	        Close all tabs apart from the current one
+" gt	                Move to next tab
+" gT	                Move to previous tab
+" #gt	                Move to tab number #
+" :tabmove	        Move current tab to the end
+" :tabmove 0	        Move current tab to the beginning
+" :tabmove 1	        Move current tab to become the 2nd tab
+" Good article on buffers, windows and tabs: http://joshldavis.com/2014/04/05/vim-tab-madness-buffers-vs-tabs/
+
+" for linux and windows users (using the control key)
+nnoremap <C-S-]> gt
+nnoremap <C-S-[> gT
+nnoremap <C-1> 1gt
+nnoremap <C-2> 2gt
+nnoremap <C-3> 3gt
+nnoremap <C-4> 4gt
+nnoremap <C-5> 5gt
+nnoremap <C-6> 6gt
+nnoremap <C-7> 7gt
+nnoremap <C-8> 8gt
+nnoremap <C-9> 9gt
+nnoremap <C-0> :tablast<CR>
+
+" Commenting blocks of code. Use <leader>cc to comment and <leader>cu to
+" uncomment afterwards.
+" Taken from http://stackoverflow.com/a/1676672/1785391
+autocmd FileType c,cpp,java,scala let b:comment_leader = '// '
+autocmd FileType sh,ruby,python   let b:comment_leader = '# '
+autocmd FileType conf,fstab       let b:comment_leader = '# '
+autocmd FileType css,scss,sass    let b:comment_leader = '# '
+autocmd FileType tex              let b:comment_leader = '% '
+autocmd FileType mail             let b:comment_leader = '> '
+autocmd FileType vim              let b:comment_leader = '" '
+noremap <silent> <leader>cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
+noremap <silent> <leader>cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
+
+" As found on http://ddrscott.github.io/blog/2016/vim-toggle-movement/
+" 0 goes to the first non-blank character, 00 to the start of the line
+function! ToggleMovement(firstOp, thenOp)
+  let pos = getpos('.')
+  execute "normal! " . a:firstOp
+  if pos == getpos('.')
+    execute "normal! " . a:thenOp
+  endif
+endfunction
+
+" The original carat 0 swap
+nnoremap <silent> 0 :call ToggleMovement('^', '0')<CR>
+" Could be used with other movements as well
+
+" Map <Enter> to G in normal mode in order to hit <line-number>+Enter
+" Conflicts with turning off hlsearch
+"nnoremap <CR> G
+
+" Cursor should stay at the end of a yank; seen at: http://ddrscott.github.io/blog/2016/yank-without-jank/
+vnoremap <expr>y "my\"" . v:register . "y`y"
+vnoremap <expr>Y "my\"" . v:register . "Y`y"
+
