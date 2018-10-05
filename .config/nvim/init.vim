@@ -71,7 +71,9 @@ Plug 'vim-scripts/ZoomWin'
 " Ctrl-x in visual mode to "jump over" an occurence and select the next occurence
 "Plug 'terryma/vim-multiple-cursors'
 " Nice statusline: Airline
-Plug 'bling/vim-airline'
+"Plug 'bling/vim-airline'
+" Nice statusline: Airline
+Plug 'itchyny/lightline.vim'
 " Ctrl-P for fuzzy searching files, buffers, tags, ...
 " Plug 'kien/ctrlp.vim' "Unmaintained, use the following instead:
 "Plug 'ctrlpvim/ctrlp.vim'
@@ -110,6 +112,9 @@ Plug 'terryma/vim-expand-region'
 "Plug 'liuchengxu/vim-which-key'
 " Denite seems to be helm for vim / neovim
 Plug 'Shougo/denite.nvim'
+" MiniBufExpl - Show buffer names on top of the window
+" https://github.com/weynhamz/vim-plugin-minibufexpl
+Plug 'weynhamz/vim-plugin-minibufexpl'
 
 " Configuration for EasyMotion
 let g:Easymotion_do_mapping = 0 " Disable default mappings
@@ -129,6 +134,11 @@ map <Leader><Leader>w <Plug>(easymotion-bd-w)
 
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
+" MiniBufExpl - Configuration
+let g:miniBufExplMapWindowNavVim = 1 
+let g:miniBufExplMapWindowNavArrows = 1 
+let g:miniBufExplMapCTabSwitchBufs = 1 
+let g:miniBufExplModSelTarget = 1 
 
 " Initialize plugin system
 call plug#end()
@@ -174,9 +184,11 @@ set termguicolors
 " Set colorscheme
 colorscheme OceanicNext
 " Set airline-theme
-let g:airline_theme='oceanicnext'
+"let g:airline_theme='oceanicnext'
+" Set lightline-theme
+let g:lightline_theme='oceanicnext'
 " Set airline-fonts as well
-let g:airline_powerline_fonts = 1
+"let g:airline_powerline_fonts = 1
 " TODO: Try to get solarized working with nvim
 " For terminal users according to http://ethanschoonover.com/solarized/vim-colors-solarized
 "let g:solarized_termcolors=256
@@ -225,12 +237,25 @@ runtime macros/matchit.vim
     ""autocmd BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 "augroup END
 
+" Crude line text-objects, see https://vi.stackexchange.com/a/6102
+xnoremap il g_o^
+onoremap il :normal vil<CR>
+xnoremap al $o0
+onoremap al :normal val<CR>
 " Using the vim-expand-region-plugin to have an IntelliJ Ctrl-W-like
 " experience. Shrink the selection by pressing Ctrl-v in visual mode, expand
 " by pressing v in visual mode. Brilliant!
 " Found on the very good page https://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
+call expand_region#custom_text_objects({
+     \ 'a]' :1,
+     \ 'ab' :1,
+     \ 'aB' :1,
+     \ '_'  :0,
+     \ 'il' :1,
+     \ 'al' :1,
+     \ })
 
 " Setting the cursor modes as described in http://vim.wikia.com/wiki/Configuring_the_cursor 
 highlight Cursor guifg=steelblue guibg=lightgrey
@@ -256,7 +281,8 @@ endif
 " set guifont=Literation\ Mono\ Nerd\ Font\ Complete\ Mono:h10
 "set guifont=Droid\ Sans\ Mono\ Nerd\ Font\ Complete\ Mono\ Windows\ Compatible:h10
 "set guifont=Droid\ Sans\ Mono\ Nerd\ Font\ Complete\ Mono\ Windows\ Compatible:h10
-set guifont=DejaVu\ Sans\ Mono\ Nerd\ Font\ Complete\ Mono\ Windows\ Compatible:h10
+"set guifont=DejaVu\ Sans\ Mono\ Nerd\ Font\ Complete\ Mono\ Windows\ Compatible:h10
+set guifont=Fira\ Mono:h10
 "if exists("g:loaded_webdevicons")
     "call webdevicons#refresh()
 "endif

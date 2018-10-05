@@ -1,5 +1,8 @@
+# Set visual bell style in bash (right mouse click -> options in mintty)
+set bell-style visible
+
 # bash prompt including git branch and python virtualenv
-source ~/.bash-prompt
+source ~/.bash_prompt
 
 # git functions / prompt
 #source ~/.git-prompt
@@ -58,51 +61,38 @@ case "${unameOut}" in
     MINGW*)     machine=MinGw;;
     *)          machine="UNKNOWN:${unameOut}"
 esac
-#echo ${machine}
-# Start the graphical emacs within Windows
-if [ ${machine} == 'Cygwin' ]; then
-  alias emacs="cygstart /c/~NoInstall/Editoren/emacs-25.3/bin/emacsclientw.exe -na \"C:/~NoInstall/Editoren/emacs-25.3/bin/runemacs.exe\" -c -n"
-  alias semacs="EMACS_USER_DIRECTORY=~/.spacemacs.d cygstart /c/~NoInstall/Editoren/emacs-25.3/bin/emacsclientw.exe -na \"C:/~NoInstall/Editoren/emacs-25.3/bin/runemacs.exe\" -c -n";
+
+
+# Putting all general aliases in a separate file
+# Eventually those aliases are then overwritten depending on the OS
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
 fi
 
-# Some useful aliases
-alias grep='grep --color=auto --exclude==*.pyc'
-alias du='du -c -h'
-alias df='df -h'
 
-# ls
-alias l='ls -hals --color=auto --group-directories-first'
-alias ls='ls -hFX --color=auto --group-directories-first'
-alias ll='ls -l'
+#echo ${machine}
+if [ ${machine} == 'Cygwin' ]; then
+  # Start the graphical emacs within Windows
+  alias emacs="cygstart /c/~NoInstall/Editoren/emacs-25.3/bin/emacsclientw.exe -na \"C:/~NoInstall/Editoren/emacs-25.3/bin/runemacs.exe\" -c -n"
+  alias semacs="EMACS_USER_DIRECTORY=~/.spacemacs.d cygstart /c/~NoInstall/Editoren/emacs-25.3/bin/emacsclientw.exe -na \"C:/~NoInstall/Editoren/emacs-25.3/bin/runemacs.exe\" -c -n";
+  # For preventing the BrokenFilesystemwarning in cygwin / werkzeug
+  export PYTHONIOENCODING=utf-8
+  # For the python shell in cygwin
+  #export PYTHONUNBUFFERED=1
 
-# cd
-alias back='cd $OLDPWD' # same as 'cd -'?
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias h='cd ~'
+  alias c='cd /c'
+  alias w='cd /c/~ws'
+fi
 
-# Cygwin
-# TODO: Add a check if we are in cygwin bash
-alias c='cd /c'
-alias w='cd /c/~ws'
+# Setting the XDG-environment variables
+# https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+# Eventually use an already set environment variable
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:=~/.config}
+export XDG_DATA_HOME=${XDG_DATA_HOME:=~/.local}
 
-# safety features
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -i'
-alias ln='ln -i'
 
-# For the python shell in cygwin
-#export PYTHONUNBUFFERED=1
-
-# For preventing the BrokenFilesystemwarning in cygwin / werkzeug
-export PYTHONIOENCODING=utf-8
-
-# Set visual bell style in bash (right mouse click -> options in mintty)
-set bell-style visible
-
-# Starting emacs with spacemacs configuration
-# As described here: https://emacs.stackexchange.com/a/20508/14494
-#alias semacs='EMACS_USER_DIRECTORY=~/.spacemacs.d emacs'
+# Run other commands, depending on the host we are on (do not check in)
+if [ -f ~/.bash_host ]; then
+    . ~/.bash_host
+fi
 
