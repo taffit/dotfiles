@@ -9,13 +9,12 @@ exec 'set runtimepath^='.g:vim_config_root.' runtimepath+='.g:vim_config_root.'/
 let &packpath = &runtimepath
 
 " Setting swapfiles active and defining the directory for saving
-set directory=&runtimepath/tmp/
+exec 'set directory='.g:vim_data_root.'/tmp,.'
 set swapfile
-set directory+=$TMP/,.,$TEMP/
 set wildignore=*/tmp/*,*/.git/*,*.swp,*.zip,*.exe,*.pyc
 
 " Setting the backupdir for the tilde files
-exec 'set backupdir=&directory,'.g:vim_data_root.'/backup,.'
+exec 'set backupdir='.g:vim_data_root.'/backup,.'
 
 let g:python3_host_prog=$XDG_CONFIG_HOME . '/nvim/env/p3env/Scripts/python.exe'
 let g:python_host_prog=$XDG_CONFIG_HOME . '/nvim/env/p2env/Scripts/python.exe'
@@ -114,7 +113,12 @@ Plug 'terryma/vim-expand-region'
 Plug 'Shougo/denite.nvim'
 " MiniBufExpl - Show buffer names on top of the window
 " https://github.com/weynhamz/vim-plugin-minibufexpl
-Plug 'weynhamz/vim-plugin-minibufexpl'
+"Plug 'weynhamz/vim-plugin-minibufexpl'
+" vim-bufferline: the buffer names in one line
+" Replaces MiniBufExpl above as it is more compact
+" https://github.com/bling/vim-bufferline
+" For configuration run: :help bufferline
+Plug 'bling/vim-bufferline'
 
 " Configuration for EasyMotion
 let g:Easymotion_do_mapping = 0 " Disable default mappings
@@ -135,10 +139,10 @@ map <Leader><Leader>w <Plug>(easymotion-bd-w)
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
 " MiniBufExpl - Configuration
-let g:miniBufExplMapWindowNavVim = 1 
-let g:miniBufExplMapWindowNavArrows = 1 
-let g:miniBufExplMapCTabSwitchBufs = 1 
-let g:miniBufExplModSelTarget = 1 
+"let g:miniBufExplMapWindowNavVim = 1 
+"let g:miniBufExplMapWindowNavArrows = 1 
+"let g:miniBufExplMapCTabSwitchBufs = 1 
+"let g:miniBufExplModSelTarget = 1 
 
 " Initialize plugin system
 call plug#end()
