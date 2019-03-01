@@ -19,12 +19,10 @@ exec 'set backupdir='.g:vim_data_root.'/backup,.'
 let g:python3_host_prog=$XDG_CONFIG_HOME . '/nvim/env/p3env/Scripts/python.exe'
 let g:python_host_prog=$XDG_CONFIG_HOME . '/nvim/env/p2env/Scripts/python.exe'
 
-" Loading the general configuration that is the same for all vim instances
-source $XDG_CONFIG_HOME/vim/vimrc
 filetype off                  " required for e.g. Vundle / Plug
 
 " Specify a directory for plugins
-" - For Neovim: ~/.local/share/nvim/plugged
+" - For Neovim: ~/.local/share/nvim/plug
 " - Avoid using standard Vim directory names like 'plugin'
 " Plug, see https://github.com/junegunn/vim-plug
 "let path=&directory . '/vimfiles/plug'
@@ -110,7 +108,7 @@ Plug 'terryma/vim-expand-region'
 " unfortunately in neovim
 "Plug 'liuchengxu/vim-which-key'
 " Denite seems to be helm for vim / neovim
-Plug 'Shougo/denite.nvim'
+"Plug 'Shougo/denite.nvim'
 " MiniBufExpl - Show buffer names on top of the window
 " https://github.com/weynhamz/vim-plugin-minibufexpl
 "Plug 'weynhamz/vim-plugin-minibufexpl'
@@ -119,6 +117,11 @@ Plug 'Shougo/denite.nvim'
 " https://github.com/bling/vim-bufferline
 " For configuration run: :help bufferline
 Plug 'bling/vim-bufferline'
+" For quicker navigation within a line using f / F / t / T with ; / ,
+" Seems to have problems with neovim
+"Plug 'unblevable/quick-scope'
+" As alternative to quick-scope: clever-f
+Plug 'rhysd/clever-f.vim'
 
 " Configuration for EasyMotion
 let g:Easymotion_do_mapping = 0 " Disable default mappings
@@ -128,13 +131,13 @@ let g:Easymotion_do_mapping = 0 " Disable default mappings
 "map <Leader>k <Plug>(easymotion-k)
 " Move to word
 "nmap <Leader><Leader>w <Plug>(easymotion-overwin-w)
-map <Leader> <Plug>(easymotion-prefix)
-map <Leader>l <Plug>(easymotion-lineforward)
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-map <Leader>h <Plug>(easymotion-linebackward)
-map <Leader>s <Plug>(easymotion-overwin-f2)
-map <Leader><Leader>w <Plug>(easymotion-bd-w)
+nmap <Leader> <Plug>(easymotion-prefix)
+nmap <Leader>l <Plug>(easymotion-lineforward)
+nmap <Leader>j <Plug>(easymotion-j)
+nmap <Leader>k <Plug>(easymotion-k)
+nmap <Leader>h <Plug>(easymotion-linebackward)
+nmap <Leader>s <Plug>(easymotion-overwin-f2)
+nmap <Leader><Leader>w <Plug>(easymotion-bd-w)
 
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
@@ -146,8 +149,6 @@ let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
 " Initialize plugin system
 call plug#end()
-
-"source ~/.vimrc
 
 " Always use the system clipboard
 "set clipboard=unnamed
@@ -238,7 +239,7 @@ runtime macros/matchit.vim
 "augroup myvimrc
     "autocmd!
     "autocmd BufWritePost $MYVIMRC so $MYVIMRC
-    ""autocmd BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+"    ""autocmd BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 "augroup END
 
 " Crude line text-objects, see https://vi.stackexchange.com/a/6102
@@ -349,4 +350,14 @@ endfun
 " If in netrw, q closes the window
 autocmd FileType netrw nnoremap q :bw<CR>
 
+" Loading the general configuration that is the same for all vim instances
+source $XDG_CONFIG_HOME/vim/vimrc
+
+" Enable quick-scope
+"let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+
+" Configure clever-f
+let g:clever_f_smart_case = 1
+map ; <Plug>(clever-f-repeat-forward)
+map , <Plug>(clever-f-repeat-back)
 

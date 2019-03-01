@@ -18,7 +18,7 @@ set shiftround             " use multiple of shiftwidth when indenting with '<' 
 set history=1000           " bigger history
 set scrolloff=3            " keeping more context on scrolling outside
 set ruler                  " enabling the ruler in the lower right (line, col, %)
-set visualbell             " enabling visual bell instead of bell 
+set visualbell             " enabling visual bell instead of bell
 syntax enable              " Set syntax on
 set background=dark        " Set a dark background
 set ignorecase             " Case insensitive search
@@ -27,7 +27,10 @@ set incsearch              " show search matches as you type
 set wrapscan               " Wrap search on EOF to BOF
 " Removes the highlightning of a search term (and removes the :noh in the status)
 nnoremap <CR> :noh<CR>:<backspace>
-nnoremap n nzz             " Centering a find
+" Attention: The following is the culprit that somehow the cursor is not
+" positioned at the finding, but ~10 characters after the term.
+"nnoremap n n zz            " Centering a find
+vnoremap n nzz             " Centering a find
 set autochdir              " Change directory to the current buffer when opening files.
 
 " Setting row length column
@@ -54,7 +57,9 @@ nnoremap <leader>w :w<CR>
 nnoremap <leader>o :browse oldfiles<CR>
 " <leader>e toggles the built in explorer
 " Starting with a space it shouldn't add the window to the buffer list?
-nnoremap <leader>e :<Space>Lexplore<CR>
+"nnoremap <leader>e :<Space>Lexplore<CR>
+" ... but just the default one in the current buffer
+nnoremap <leader>e :<Space>Explore .<CR>
 " <leader>cd changes the directory to the one of the current buffer
 nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 " Hitting <leader>b will invoke buffers und then you have to select just the number
@@ -126,18 +131,24 @@ nnoremap <C-8> 8gt
 nnoremap <C-9> 9gt
 nnoremap <C-0> :tablast<CR>
 
-" Commenting blocks of code. Use <leader>cc to comment and <leader>cu to
-" uncomment afterwards.
-" Taken from http://stackoverflow.com/a/1676672/1785391
-autocmd FileType c,cpp,java,scala let b:comment_leader = '// '
-autocmd FileType sh,ruby,python   let b:comment_leader = '# '
-autocmd FileType conf,fstab       let b:comment_leader = '# '
-autocmd FileType css,scss,sass    let b:comment_leader = '# '
-autocmd FileType tex              let b:comment_leader = '% '
-autocmd FileType mail             let b:comment_leader = '> '
-autocmd FileType vim              let b:comment_leader = '" '
-noremap <silent> <leader>cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
-noremap <silent> <leader>cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
+" As found here: http://vimcasts.org/episodes/whitespace-preferences-and-filetypes/
+" Only do this part when compiled with support for autocommands
+if has("autocmd")
+  " Enable file type detection
+  filetype on
+  " Commenting blocks of code. Use <leader>cc to comment and <leader>cu to
+  " uncomment afterwards.
+  " Taken from http://stackoverflow.com/a/1676672/1785391
+  autocmd FileType c,cpp,java,scala let b:comment_leader = '// '
+  autocmd FileType sh,ruby,python   let b:comment_leader = '# '
+  autocmd FileType conf,fstab       let b:comment_leader = '# '
+  autocmd FileType css,scss,sass    let b:comment_leader = '# '
+  autocmd FileType tex              let b:comment_leader = '% '
+  autocmd FileType mail             let b:comment_leader = '> '
+  autocmd FileType vim              let b:comment_leader = '" '
+  noremap <silent> <leader>cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
+  noremap <silent> <leader>cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
+endif
 
 " As found on http://ddrscott.github.io/blog/2016/vim-toggle-movement/
 " 0 goes to the first non-blank character, 00 to the start of the line
