@@ -311,6 +311,15 @@ set conceallevel=3
 "let g:netrw_browse_split = 4
 "let g:netrw_altv=1  " Open in vertical split
 
+" Set vim to chdir for each file
+" Found here: https://stackoverflow.com/a/1709267/1785391
+" % .. current filename :p .. expand full path :h head (rm last path component)
+if exists('+autochdir')
+    set autochdir
+else
+    autocmd BufEnter * silent! lcd %:p:h:gs/ /\\ /
+endif
+
 " Close netrw window so it doesn't show up in the buffer list
 " See: https://vi.stackexchange.com/a/14633
 autocmd FileType netrw setl bufhidden=wipe
