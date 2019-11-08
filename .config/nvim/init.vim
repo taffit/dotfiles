@@ -1,35 +1,17 @@
 set shellslash      " Use forward slashes on file paths even on Windows
-" Set `vim_config_root` to the nvim-specific configuration folder
-let g:vim_config_root=escape(expand('$XDG_CONFIG_HOME/nvim'), ' ')
-let g:vim_data_root=escape(expand('$XDG_DATA_HOME/nvim'), ' ')
-" Needs to be set for nvim
-"set runtimepath^=$XDG_CONFIG_HOME/nvim runtimepath+=$XDG_CONFIG_HOME/nvim/after
-" Executing to combine set ^= / += with a variable
-exec 'set runtimepath^='.g:vim_config_root.' runtimepath+='.g:vim_config_root.'/after'
+" We have valid defaults for the following paths, so no need to fiddle with
+" this (see: https://github.com/neovim/neovim/issues/78#issue-28120804 )
 let &packpath = &runtimepath
 
 " Setting swapfiles active and defining the directory for saving
-exec 'set directory='.g:vim_data_root.'/tmp,.'
+"exec 'set directory='.g:vim_data_root.'/tmp,.'
 set swapfile
 set wildignore=*/tmp/*,*/.git/*,*.swp,*.zip,*.exe,*.pyc
 
-" Setting the backupdir for the tilde files
-exec 'set backupdir='.g:vim_data_root.'/backup,.'
-
-let g:python3_host_prog=$XDG_CONFIG_HOME . '/nvim/env/p3env/Scripts/python.exe'
-let g:python_host_prog=$XDG_CONFIG_HOME . '/nvim/env/p2env/Scripts/python.exe'
-
 filetype off                  " required for e.g. Vundle / Plug
 
-" Specify a directory for plugins
-" - For Neovim: ~/.local/share/nvim/plug
-" - Avoid using standard Vim directory names like 'plugin'
 " Plug, see https://github.com/junegunn/vim-plug
-"let path=&directory . '/vimfiles/plug'
-"call plug#begin()
-"call plug#begin(g:vim_data_root)
-"call plug#begin('$XDG_DATA_HOME/nvim')
-exec 'call plug#begin("'.g:vim_data_root.'/plug")'
+exec 'call plug#begin("'.&directory.'/plug")'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -194,19 +176,12 @@ colorscheme OceanicNext
 let g:lightline_theme='oceanicnext'
 " Set airline-fonts as well
 "let g:airline_powerline_fonts = 1
-" TODO: Try to get solarized working with nvim
-" For terminal users according to http://ethanschoonover.com/solarized/vim-colors-solarized
-"let g:solarized_termcolors=256
 " According to https://vi.stackexchange.com/a/8562
 " True gui colors in terminal
 "if has('gui_running')
     "let $NVIM_TUI_ENABLE_TRUE_COLOR=1
     "set termguicolors
 "endif
-"au VimEnter * colorscheme solarized
-" TODO-END
-" Solarized toggle background (using built in function)
-"call togglebg#map("<leader>bg")
 
 " Autocompletion
 " key	description
@@ -265,6 +240,7 @@ call expand_region#custom_text_objects({
 " Setting the cursor modes as described in http://vim.wikia.com/wiki/Configuring_the_cursor 
 highlight Cursor guifg=steelblue guibg=lightgrey
 highlight iCursor guifg=steelblue guibg=white
+
 set guicursor=n-v-c:block-Cursor
 set guicursor+=i:ver100-iCursor
 set guicursor+=n-v-c:blinkon0
@@ -276,11 +252,11 @@ nmap <leader>bb :bp<CR>
 
 
 " Following the hint from :help nvim-from-vim
-if !has('nvim')
-    set ttymouse=xterm2
-    set term=xterm
-    set t_co=256
-endif
+"if !has('nvim')
+    "set ttymouse=xterm2
+    "set term=xterm
+    "set t_co=256
+"endif
 
 " let g:Guifont="Literation Mono Nerd Font Complete Mono:h10"
 " set guifont=Literation\ Mono\ Nerd\ Font\ Complete\ Mono:h10

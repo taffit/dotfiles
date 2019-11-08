@@ -7,3 +7,4 @@
 .emacs.d*/server/
 .tmux/plugins/
 .tmux/resurrect/
+.config/nvim/.netrwhist

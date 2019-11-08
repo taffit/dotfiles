@@ -56,10 +56,15 @@ nnoremap <leader>w :w<CR>
 " This shortcut is used to open MRUs
 nnoremap <leader>o :browse oldfiles<CR>
 " <leader>e toggles the built in explorer
+" <leader>e toggles the built in explorer
 " Starting with a space it shouldn't add the window to the buffer list?
 "nnoremap <leader>e :<Space>Lexplore<CR>
 " ... but just the default one in the current buffer
 nnoremap <leader>e :<Space>Explore .<CR>
+" Edit Vim config file in a new tab.
+map <Leader>ev :tabnew $MYVIMRC<CR>
+" Source Vim config file.
+map <Leader>sv :source $MYVIMRC<CR>
 " <leader>cd changes the directory to the one of the current buffer
 nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 " Hitting <leader>b will invoke buffers und then you have to select just the number
@@ -67,10 +72,10 @@ nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 nnoremap <leader>b :ls<CR>:b<Space>
 
 " Easier split navigation using Ctrl-jkhl instead of Ctrl-w Ctrl-jkhl
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-H> <C-W><C-H>
-nnoremap <C-L> <C-W><C-L>
+nnoremap <C-j> <C-w><C-j>
+nnoremap <C-k> <C-w><C-k>
+nnoremap <C-h> <C-w><C-h>
+nnoremap <C-l> <C-w><C-l>
 
 " Alt-Shift-j/k deletes blank line below/above, and Alt-j/k inserts.
 nnoremap <silent><A-S-j> m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
@@ -81,6 +86,14 @@ nnoremap <silent><A-k> :set paste<CR>m`O<Esc>``:set nopaste<CR>
 " A more intuitive way: oo or OO
 nmap oo o<Esc>k
 nmap OO O<Esc>j
+
+" Prevent x from overriding what's in the clipboard.
+noremap x "_x
+noremap X "_x
+
+" Prevent selecting and pasting from overwriting what you originally copied.
+xnoremap p pgvy
+xnoremap P Pgvy
 
 " Increment / decrement number under cursor with <leader>= / <leader>- instead of
 " default Ctrl-A / Ctrl-X
@@ -117,19 +130,22 @@ highlight space guifg=#C2D5DF
 " :tabmove 1	        Move current tab to become the 2nd tab
 " Good article on buffers, windows and tabs: http://joshldavis.com/2014/04/05/vim-tab-madness-buffers-vs-tabs/
 
-" for linux and windows users (using the control key)
-nnoremap <C-S-]> gt
-nnoremap <C-S-[> gT
-nnoremap <C-1> 1gt
-nnoremap <C-2> 2gt
-nnoremap <C-3> 3gt
-nnoremap <C-4> 4gt
-nnoremap <C-5> 5gt
-nnoremap <C-6> 6gt
-nnoremap <C-7> 7gt
-nnoremap <C-8> 8gt
-nnoremap <C-9> 9gt
-nnoremap <C-0> :tablast<CR>
+" Using the <Leader> for navigating tabs
+nnoremap <Leader>] gt
+nnoremap <Leader>[ gT
+nnoremap <Leader><Leader>1 1gt
+nnoremap <Leader><Leader>2 2gt
+nnoremap <Leader><Leader>3 3gt
+nnoremap <Leader><Leader>4 4gt
+nnoremap <Leader><Leader>5 5gt
+nnoremap <Leader><Leader>6 6gt
+nnoremap <Leader><Leader>7 7gt
+nnoremap <Leader><Leader>8 8gt
+nnoremap <Leader><Leader>9 9gt
+nnoremap <Leader><Leader>0 :tablast<CR>
+
+" Cycle through splits.
+nnoremap <S-Tab> <C-w>w
 
 " As found here: http://vimcasts.org/episodes/whitespace-preferences-and-filetypes/
 " Only do this part when compiled with support for autocommands
@@ -146,6 +162,8 @@ if has("autocmd")
   autocmd FileType tex              let b:comment_leader = '% '
   autocmd FileType mail             let b:comment_leader = '> '
   autocmd FileType vim              let b:comment_leader = '" '
+  " Make sure all types of requirements.txt files get syntax highlighting.
+  autocmd BufNewFile,BufRead requirements*.txt set syntax=python
   noremap <silent> <leader>cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
   noremap <silent> <leader>cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 endif
