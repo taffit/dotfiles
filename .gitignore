@@ -8,3 +8,6 @@
 .tmux/plugins/
 .tmux/resurrect/
 .config/nvim/.netrwhist
+**/.undodir/
+*.swp
+**/.netrwbook
