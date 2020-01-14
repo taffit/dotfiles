@@ -36,3 +36,6 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias ln='ln -i'
 
+# shortening commands
+alias dc=docker-compose
+
