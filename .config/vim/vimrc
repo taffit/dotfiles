@@ -31,7 +31,20 @@ nnoremap <CR> :noh<CR>:<backspace>
 " positioned at the finding, but ~10 characters after the term.
 "nnoremap n n zz            " Centering a find
 vnoremap n nzz             " Centering a find
-set autochdir              " Change directory to the current buffer when opening files.
+set mouse=a                " Mouse support for all modes
+set undofile               " Keep the undo information
+set tabpagemax=15          " Increase maximum number of possible tabs
+set formatoptions+=j       " Remove comment character when joining lines
+" Look in the directory containing the current file (.), then the current
+" directory (empty text between two commas), then each directory under the
+" current directory ('**').
+set path=.,,**
+
+" Set vim to chdir for each file
+" The autochdir-option can provoke errors on some scripts
+" Found here: https://stackoverflow.com/a/1709267/1785391
+" % .. current filename :p .. expand full path :h head (rm last path component)
+autocmd BufEnter * silent! lcd %:p:h:gs/ /\\ /
 
 " Setting row length column
 highlight ColorColumn ctermbg=gray
@@ -53,6 +66,8 @@ let mapleader = "\<Space>"
 nnoremap <leader>q :bp<bar>sp<bar>silent!<Space>bn<bar>bd<CR>
 " <leader>w to save the file
 nnoremap <leader>w :w<CR>
+" <leader>zz to save and close the file
+nnoremap <leader>zz :wq<CR>
 " This shortcut is used to open MRUs
 nnoremap <leader>o :browse oldfiles<CR>
 " <leader>e toggles the built in explorer
@@ -65,17 +80,102 @@ nnoremap <leader>e :<Space>Explore .<CR>
 map <Leader>ev :tabnew $MYVIMRC<CR>
 " Source Vim config file.
 map <Leader>sv :source $MYVIMRC<CR>
+" Source current file
+map <Leader>ss :source %:p<CR>
+" Refresh/reload current buffer
+map <Leader>rf :e<CR>
 " <leader>cd changes the directory to the one of the current buffer
 nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 " Hitting <leader>b will invoke buffers und then you have to select just the number
 ":nnoremap <leader>b :buffers<CR>:buffer<Space>
 nnoremap <leader>b :ls<CR>:b<Space>
+" Just listing the open buffers
+nnoremap <leader>ls :ls<CR>
+" Delete the current buffer
+nnoremap <leader>bd :bdelete<CR>
+" Just close the window, not the buffer, with <leader>wq
+nnoremap <leader>wq <C-w>q
+" Just close it
+nnoremap <leader><leader>q :q<CR>
+" And same with entering the number first + ,k
+nnoremap <v:count>,k <v:count><C-^>
+"nmap <silent> <v:count>,k :<C-U>b <v:count><CR>
+"nmap <silent> <v:count>,k :<C-U>call ChangeBuffer(v:count)<CR>
+" function! ChangeBuffer(count)
+"     if a:count > 0
+"         execute ":b " . a:count
+"     endif
+" endfunction
+" Use <leader><tab> to show buffer list. Navigate with left/right or enter
+" fuzzy string + <tab> for autocompletion
+set wildcharm=<tab>            " Else <tab> is <C-i> by default  
+nnoremap <leader><tab> :b<space><tab>
+" As alternative (if <tab> is not working in the mapping):
+"nnoremap <leader><leader><tab> :call feedkeys(":b \<Tab>")
+" See: https://vi.stackexchange.com/a/13508/19165
+" Use <leader><leader><tab> for switching the most recent buffers (like cd -)
+" See: https://stackoverflow.com/a/43399389/1785391
+nnoremap <leader><leader><tab> :b#<cr>
 
+" A new vertical split with <leader><leader>v
+map <silent> <leader><leader>v :vsplit<CR>
+" A new horizontal split with <leader><leader>h
+map <silent> <leader><leader>h :split<CR>
+
+" Quoting using <leader><leader>' or " or <
+" See: https://stackoverflow.com/questions/2147875/what-vim-commands-can-be-used-to-quote-unquote-words
+map <silent> <leader><leader>' ciw'<C-r><C-o>"'<esc>
+map <silent> <leader><leader>" ciw"<C-r><C-o>""<esc>
+map <silent> <leader><leader>< ciw\<<C-r><C-o>"\><esc>
+" and delete eventual quotes
+map <silent> <leader><leader>dq daW"=substitute(@@,"'\\\|\"\<\>","","g")<CR>P
+
+" Use <tab>/<s-tab> for switching between buffers (in the current window)
+" See: https://stackoverflow.com/a/5563142/1785391
+"nnoremap  <silent>   <tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bnext<CR>
+"nnoremap  <silent> <s-tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bprevious<CR>
+
+" Renumbering of buffers (ATTN: closes and loads all buffers!)
+" See: https://vi.stackexchange.com/a/466/19165
+nnoremap <leader><leader><leader>n :argdel * <CR> :bufdo argadd % <CR> :%bw <CR> :argdo e
+
+" The following is taken over by the script
+" ${XDG_HOME}/vim/autoload/tmux_navigate.vim
 " Easier split navigation using Ctrl-jkhl instead of Ctrl-w Ctrl-jkhl
-nnoremap <C-j> <C-w><C-j>
-nnoremap <C-k> <C-w><C-k>
-nnoremap <C-h> <C-w><C-h>
-nnoremap <C-l> <C-w><C-l>
+"nnoremap <C-j> <C-w><C-j>
+"nnoremap <C-k> <C-w><C-k>
+"nnoremap <C-h> <C-w><C-h>
+"nnoremap <C-l> <C-w><C-l>
+" See: https://www.codeography.com/2013/06/19/navigating-vim-and-tmux-splits
+if exists('$TMUX')
+  function! TmuxOrSplitSwitch(wincmd, tmuxdir)
+    let previous_winnr = winnr()
+    silent! execute "wincmd " . a:wincmd
+    if previous_winnr == winnr()
+      call system("tmux select-pane -" . a:tmuxdir)
+      redraw!
+    endif
+  endfunction
+
+  let previous_title = substitute(system("tmux display-message -p '#{pane_title}'"), '\n', '', '')
+  let &t_ti = "\<Esc>]2;vim\<Esc>\\" . &t_ti
+  let &t_te = "\<Esc>]2;". previous_title . "\<Esc>\\" . &t_te
+
+  nnoremap <silent> <C-h> :call TmuxOrSplitSwitch('h', 'L')<cr>
+  nnoremap <silent> <C-j> :call TmuxOrSplitSwitch('j', 'D')<cr>
+  nnoremap <silent> <C-k> :call TmuxOrSplitSwitch('k', 'U')<cr>
+  nnoremap <silent> <C-l> :call TmuxOrSplitSwitch('l', 'R')<cr>
+else
+    map <C-j> <C-w><C-j>
+    map <C-k> <C-w><C-k>
+    map <C-h> <C-w><C-h>
+    map <C-l> <C-w><C-l>
+endif
+" At least activate shift additionally
+map <C-s-j> <C-w><C-j>
+map <C-s-k> <C-w><C-k>
+map <C-s-h> <C-w><C-h>
+map <C-s-l> <C-w><C-l>
 
 " Alt-Shift-j/k deletes blank line below/above, and Alt-j/k inserts.
 nnoremap <silent><A-S-j> m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
@@ -133,6 +233,7 @@ highlight space guifg=#C2D5DF
 " Using the <Leader> for navigating tabs
 nnoremap <Leader>] gt
 nnoremap <Leader>[ gT
+nnoremap <Leader><Leader>t :tabnew<CR>
 nnoremap <Leader><Leader>1 1gt
 nnoremap <Leader><Leader>2 2gt
 nnoremap <Leader><Leader>3 3gt
@@ -155,17 +256,32 @@ if has("autocmd")
   " Commenting blocks of code. Use <leader>cc to comment and <leader>cu to
   " uncomment afterwards.
   " Taken from http://stackoverflow.com/a/1676672/1785391
+  " For Python-files we add an additional colorcolumn for numpy-like docstrings
   autocmd FileType c,cpp,java,scala let b:comment_leader = '// '
   autocmd FileType sh,ruby,python   let b:comment_leader = '# '
+  autocmd FileType python           setlocal colorcolumn+=75
   autocmd FileType conf,fstab       let b:comment_leader = '# '
+  " add yaml stuffs
+  au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
+  autocmd FileType yaml             setlocal tabstop=2 sts=2 sw=2 expandtab|let b:comment_leader = '# '
   autocmd FileType css,scss,sass    let b:comment_leader = '# '
   autocmd FileType tex              let b:comment_leader = '% '
+  au! BufNewFile,BufRead *.svelte   set filetype=html tabstop=2 sts=2 sw=2 expandtab|let b:comment_leader = '// '
+  au! BufNewFile,BufRead *.js, *.json  set filetype=javascript tabstop=2 sts=2 sw=2 expandtab|let b:comment_leader = '// '
   autocmd FileType mail             let b:comment_leader = '> '
   autocmd FileType vim              let b:comment_leader = '" '
   " Make sure all types of requirements.txt files get syntax highlighting.
   autocmd BufNewFile,BufRead requirements*.txt set syntax=python
+  autocmd BufNewFile,BufRead *.py.mako set filetype=python
   noremap <silent> <leader>cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
   noremap <silent> <leader>cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
+  " Persist the folds in the files
+  " See: https://www.freecodecamp.org/news/learn-linux-vim-basic-features-19134461ab85/
+  " Deactivated, as it yields a warning for every file where it hasn't saved
+  " any information yet (or where it doesn't like the path, whatever...)
+  " TODO: Maybe it can be silented? Check.
+  "autocmd BufWinLeave *.* mkview
+  "autocmd BufWinEnter *.* silent loadview
 endif
 
 " As found on http://ddrscott.github.io/blog/2016/vim-toggle-movement/
@@ -203,3 +319,24 @@ autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checkti
 autocmd FileChangedShellPost *
   \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
+" Asking if it should be really closed, but only if we have just one tab / window
+" Mainly here because of the way of asking for confirmation
+" See: https://stackoverflow.com/a/11672367/2166823
+nnoremap ZZ :call QuitPrompt()<cr>
+fun! QuitPrompt()
+   if has("gui_running") && tabpagenr("$") == 1 && winnr("$") == 1
+      let choice = confirm("Close?", "&yes\n&no", 1)
+      if choice == 1 | wq | endif
+   else | wq | endif
+endfun
+
+" Delete the current file and close the buffer.
+" See: https://stackoverflow.com/questions/16678661/how-can-i-delete-the-current-file-in-vim
+nnoremap <Leader>rm :call DeleteFileAndCloseBuffer()<CR>
+fun! DeleteFileAndCloseBuffer()
+  let choice = confirm("Delete file and close buffer?", "Sir, &yes, sir!!\nOh &nonono", 1)
+  if choice == 1 | call delete(expand('%:p')) | bdelete! | endif
+endfun
+
+" Show the unsaved changes of the current buffer using diff
+nnoremap <leader><leader><leader>d :w !diff % -<CR>
