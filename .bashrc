@@ -35,6 +35,9 @@ shopt -s checkwinsize
 # Set visual bell style in bash (right mouse click -> options in mintty)
 set bell-style visible
 
+# Setting vi-mode for bash
+set -o vi
+
 # bash prompt including git branch and python virtualenv
 source ~/.bash_prompt
 
@@ -141,3 +144,16 @@ if [ -f ~/.bash_host ]; then
     . ~/.bash_host
 fi
 
+
+# fuzzy file finder
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# Adding envvar for LIBGL (used by X)
+export LIBGL_ALWAYS_INDIRECT=1
+# For pulseaudio
+export PULSE_SERVER=tcp:localhost
+
+# If starting zsh
+#if [ -t 1 ] ;
+#   zsh
+#fi
