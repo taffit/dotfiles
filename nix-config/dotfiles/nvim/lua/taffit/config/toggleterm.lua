@@ -21,6 +21,7 @@ vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 map({'n', 'i', 'v', 't'}, '<leader><leader>th', '<cmd>exe v:count1 . "ToggleTerm direction=horizontal"<cr>', {})
 map({'n', 'i', 'v', 't'}, '<leader><leader>tv', '<cmd>exe v:count1 . "ToggleTerm direction=vertical"<cr>', {})
 map({'n', 'i', 'v', 't'}, '<leader><leader>tf', '<cmd>exe v:count1 . "ToggleTerm direction=float"<cr>', {})
+map({'n', 'i', 'v', 't'}, '<leader>t', '<cmd>exe v:count1 . "ToggleTerm direction=float"<cr>', {})
 
 -- Terminal mode mapping to close current terminal
 map('t', '<leader><leader>tc', '<cmd>ToggleTerm<cr>', {})

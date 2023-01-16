@@ -51,7 +51,7 @@ map('n', '<leader>wq', '<C-w>q')
 -- Just close it
 map('n', '<leader>q', ':q<cr>')
 -- Exiting, but asking for saving modified buffers
-map('n', '<leader><leader>x', ':confirm qall<cr>')
+map('n', '<leader>x', ':confirm qall<cr>')
 -- A new vertical split with <leader><leader>v
 map({'n', 'v', 'i', 's'}, '<leader><leader>v', ':vsplit<cr>')
 -- A new horizontal split with <leader><leader>h
@@ -88,14 +88,15 @@ map({'n', 'v', 'i', 't'}, '<C-Left>', ':vertical resize -2<CR>', opts)
 map({'n', 'v', 'i', 't'}, '<C-Right>', ':vertical resize +2<CR>', opts)
 
 -- Stay in visual mode even if indenting
+-- TODO Check if these lines are the reason that the dot-operator doesn't work in visual mode
 map('v', '<', '<gv', opts)
 map('v', '>', '>gv', opts)
 
 -- Navigate buffers
-map('n', '<S-l>', ':bnext<CR>', opts)
-map('n', '<S-h>', ':bprevious<CR>', opts)
-map('n', '<leader>bn', ':bn<cr>')
-map('n', '<leader>bp', ':bp<cr>')
+map('n', '<S-l>', '<cmd>bnext<cr>', opts)
+map('n', '<S-h>', '<cmd>bprevious<cr>', opts)
+--map('n', '<leader>bn', ':bn<cr>')
+--map('n', '<leader>bp', ':bp<cr>')
 
 -- Move text up and down
 map('n', '<A-j>', '<Esc>:m .+1<CR>==', opts)
@@ -111,8 +112,8 @@ map('x', '<A-k>', ":move '<-2<CR>gv=gv", opts)
 map('t', '<esc>', '<C-\\><C-n>')                    -- exit
 
 -- File explorer, using nnn.vim
-map({'n', 'v', 'i', 'x'}, '<leader><leader>e', ':NnnExplorer<cr>', opts)
-map({'n', 'v', 'i', 'x'}, '<leader><leader>o', ':NnnPicker<cr>', opts)
+--map({'n', 'v', 'i', 'x'}, '<leader><leader>e', ':NnnExplorer<cr>', opts)
+map({'n', 'v', 'i', 'x'}, '<leader>o', ':NnnPicker<cr>', opts)
 
 map({'n', 'i'}, '<leader><leader>l', function() toggle_option("list", true, false, "List") end, { desc = "Toggle list hidden chars"})
 map({'n', 'i'}, '<leader><leader>p', function() toggle_option("paste", true, false, "Paste") end, { desc = "Toggle paste mode"})
