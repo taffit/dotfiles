@@ -5,7 +5,7 @@ local opts = { noremap=true, silent=true }
 local silent = { silent=true }
 
 -- Set the <leader> to <Space>
-map('', '<space>', '<nop>')
+map('n', '<space>', '<nop>')
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -53,11 +53,11 @@ map('n', '<leader>q', ':q<cr>')
 -- Exiting, but asking for saving modified buffers
 map('n', '<leader>x', ':confirm qall<cr>')
 -- A new vertical split with <leader><leader>v
-map({'n', 'v', 'i', 's'}, '<leader><leader>v', ':vsplit<cr>')
+map({'n', 'v', 's'}, '<leader><leader>v', ':vsplit<cr>')
 -- A new horizontal split with <leader><leader>h
-map({'n', 'v', 'i', 's'}, '<leader><leader>h', ':split<cr>')
+map({'n', 'v', 's'}, '<leader><leader>h', ':split<cr>')
 -- Reset sizes
-map({'n', 'v', 'i', 's'}, '<leader><leader>=', '<C-w>=')
+map({'n', 'v', 's'}, '<leader><leader>=', '<C-w>=')
 
 -- A more intuitive way: oo or OO
 map('n', 'oo', 'o<esc>k')
@@ -73,19 +73,19 @@ map('x', 'P', 'Pgvy')
 
 -- Easier navigation (TODO as soon as you have tmux activated, we need some other script)
 -- Basically using next/previous instead of up/down, spanning multiple columns, ...
-map({'n', 'v', 'i', 't'}, '<C-j>', '<C-w>w', { desc = 'Jump to the next buffer/buffer below' })
-map({'n', 'v', 'i', 't'}, '<C-k>', '<C-w>W', { desc = 'Jump to the previous buffer/buffer above' })
---map({'n', 'v', 'i', 't'}, '<C-j>', '<C-w><C-j>')
---map({'n', 'v', 'i', 't'}, '<C-k>', '<C-w><C-k>')
+map({'n', 'v', 't'}, '<C-j>', '<C-w>w', { desc = 'Jump to the next buffer/buffer below' })
+map({'n', 'v', 't'}, '<C-k>', '<C-w>W', { desc = 'Jump to the previous buffer/buffer above' })
+--map({'n', 'v', 't'}, '<C-j>', '<C-w><C-j>')
+--map({'n', 'v', 't'}, '<C-k>', '<C-w><C-k>')
 -- ... and left/right
-map({'n', 'v', 'i', 't'}, '<C-h>', '<C-w><C-h>', { desc = 'Jump to the buffer to the left' })
-map({'n', 'v', 'i', 't'}, '<C-l>', '<C-w><C-l>', { desc = 'Jump to the buffer to the right' })
+map({'n', 'v', 't'}, '<C-h>', '<C-w><C-h>', { desc = 'Jump to the buffer to the left' })
+map({'n', 'v', 't'}, '<C-l>', '<C-w><C-l>', { desc = 'Jump to the buffer to the right' })
 
 -- Resize with arrows
-map({'n', 'v', 'i', 't'}, '<C-Up>', ':resize +2<CR>', opts)
-map({'n', 'v', 'i', 't'}, '<C-Down>', ':resize -2<CR>', opts)
-map({'n', 'v', 'i', 't'}, '<C-Left>', ':vertical resize -2<CR>', opts)
-map({'n', 'v', 'i', 't'}, '<C-Right>', ':vertical resize +2<CR>', opts)
+map({'n', 'v', 't'}, '<C-Up>', ':resize +2<CR>', opts)
+map({'n', 'v', 't'}, '<C-Down>', ':resize -2<CR>', opts)
+map({'n', 'v', 't'}, '<C-Left>', ':vertical resize -2<CR>', opts)
+map({'n', 'v', 't'}, '<C-Right>', ':vertical resize +2<CR>', opts)
 
 -- Stay in visual mode even if indenting
 -- TODO Check if these lines are the reason that the dot-operator doesn't work in visual mode
@@ -112,8 +112,8 @@ map('x', '<A-k>', ":move '<-2<CR>gv=gv", opts)
 map('t', '<esc>', '<C-\\><C-n>')                    -- exit
 
 -- File explorer, using nnn.vim
---map({'n', 'v', 'i', 'x'}, '<leader><leader>e', ':NnnExplorer<cr>', opts)
-map({'n', 'v', 'i', 'x'}, '<leader>o', ':NnnPicker<cr>', opts)
+--map({'n', 'v', 'x'}, '<leader><leader>e', ':NnnExplorer<cr>', opts)
+map({'n', 'v', 'x'}, '<leader>o', ':NnnPicker<cr>', opts)
 
 map({'n', 'i'}, '<leader><leader>l', function() toggle_option("list", true, false, "List") end, { desc = "Toggle list hidden chars"})
 map({'n', 'i'}, '<leader><leader>p', function() toggle_option("paste", true, false, "Paste") end, { desc = "Toggle paste mode"})

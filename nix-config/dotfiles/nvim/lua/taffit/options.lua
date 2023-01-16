@@ -16,7 +16,8 @@ set.expandtab = true              -- always use spaces instead of tab characters
 set.shiftround = true             -- use multiple of shiftwidth when indenting with '<' and '>'
 --set.listchars = 'eol:⏎,tab:»·,trail:×,nbsp:•'  -- make tab, etc visible
 --set.listchars = 'trail:·,precedes:«,extends:»,eol:¬,tab:\|\·'
-set.listchars = 'tab:\\U0001f892·,trail:\\u2716,precedes:«,extends:»,eol:¬,nbsp:•'
+--set.listchars = 'tab:\\U0001f892·,trail:\\u2716,precedes:«,extends:»,eol:¬,nbsp:•'
+set.listchars = 'tab:\\U0001f892·,trail:\\u2716,precedes:«,extends:»,eol:¶,nbsp:•'
 
 set.history = 1000           -- bigger history
 set.scrolloff = 8            -- keeping more context on scrolling outside
@@ -61,8 +62,10 @@ set.formatoptions:append('j')  -- Remove comment character when joining lines
 set.guifont = 'Fira Code'
 set.conceallevel = 3
 
-set.completeopt = 'menuone,noselect'
+set.completeopt = 'menu,menuone,noselect'
+set.wildignore = '*/node_modules/**'
 set.wildmenu = true
+set.wildmode = 'lastused:list:full'
 
 
 -- TODO

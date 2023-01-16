@@ -12,6 +12,8 @@
       EDITOR = "nvim";
       CPATH = "/usr/include:/usr/include/x86_64-linux-gnu";
       #LD_LIBRARY_PATH = "/usr/lib:/usr/lib/x86_64-linux-gnu:/usr/local/lib:$LD_LIBRARY_PATH";
+      # In order to make some paging working correctly (e. g. for rich in Python)
+      PAGER = "less -r";
     };
     shellAliases = {
       l = "ls -als --color";
