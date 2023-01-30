@@ -20,6 +20,9 @@
       d = "docker run --rm -it";
       dc = "docker compose";
       hm = "home-manager";
+      hmg = "home-manager generations";
+      hmrmg = "home-manager remove-generations";
+      hmxg = "home-manager expire-generations";
       n = "nnn";
       ".." = "cd ..";
       "..." = "cd ../..";
@@ -38,6 +41,8 @@
       git
       glibc
       gnumake
+      go
+      graphviz
       httpie
       (nerdfonts.override { fonts = [
         "FantasqueSansMono" "FiraCode" "FiraMono"
@@ -81,7 +86,9 @@
       sqlitebrowser
       tree
       tree-sitter
+      unzip
       wget
+      xdg-utils
 
       # Fonts
       fontconfig
@@ -107,101 +114,188 @@
       enable = true;
       baseIndex = 1;
       clock24 = true;
-      prefix = "C-a";
+      prefix = "C-Space";
       terminal = "xterm-256color";
       extraConfig = ''
-				######################
-				## General settings ##
-				######################
-      	# Set the delay so that it doesn't interfere with applications like vim
-				set -sg escape-time 0
+######################
+## General settings ##
+######################
+# Set the delay so that it doesn't interfere with applications like vim
+set -sg escape-time 0
 
-				# Make window and pane indexes start with 1
-				set -g base-index 1
-				setw -g pane-base-index 1
+# Make window and pane indexes start with 1
+set -g base-index 1
+setw -g pane-base-index 1
 
-				# Use vi key bindings
-				set -g status-keys vi
-				setw -g mode-keys vi
+# Use vi key bindings
+set -g status-keys vi
+setw -g mode-keys vi
 
-				# force tmux to use utf-8
-				setw -gq utf8 on
+# force tmux to use utf-8
+setw -gq utf8 on
 
-				# activate mouse in tmux
-				set -g mouse on
+# activate mouse in tmux
+set -g mouse on
 
-				# increasing timeout to switch ppane on <prefix>-q
-				set -g display-panes-time 4000 # cancel with ESC
+# increasing timeout to switch ppane on <prefix>-q
+set -g display-panes-time 4000 # cancel with ESC
 
-				# Add more scroll history to the buffer
-				set -g history-limit 100000
+# Add more scroll history to the buffer
+set -g history-limit 100000
 
-				# Ensure window titles get renamed automatically
-				setw -g automatic-rename on
-				set -g set-titles on
+# Ensure window titles get renamed automatically
+setw -g automatic-rename on
+set -g set-titles on
 
-				##################
-				## Key bindings ##
-				##################
-				# The following rebindings need the prefix before the keys!
-				# split panes using | and - (instead of % and ")
-				unbind %
-				bind | split-window -h
-				bind v split-window -h
-				unbind '"'
-				bind - split-window -v
-				bind h split-window -v
+##################
+## Key bindings ##
+##################
+# Edit configuration
+bind e new-window -n '~/.tmux.conf' run-shell 'sh -c "''${EDITOR:-vim} ~/.tmux.conf && tmux source ~/.tmux.conf && tmux display `~/.tmux.conf sourced`"'
 
-				# Go to last window
-				bind-key -n M-w last-window
+# Source config-file
+bind r source-file ~/.tmux.conf \; display "Reloaded!"
 
-				################
-				## Appearance ##
-				################
-				# Show notices when there is activity on another window
-				setw -g monitor-activity on
-				set -g visual-activity off
-				# Visual bell
-				set -g visual-bell on
+# The following rebindings need the prefix before the keys!
+# split panes using | and - (instead of % and ")
+unbind %
+bind-key "|" split-window -h -c "#{pane_current_path}"
+bind-key "\\" split-window -fh -c "#{pane_current_path}"
+bind-key "v" split-window -h -c "#{pane_current_path}"
+unbind '"'
+bind-key "-" split-window -v -c "#{pane_current_path}"
+bind-key "_" split-window -fv -c "#{pane_current_path}"
+bind-key "h" split-window -v -c "#{pane_current_path}"
 
-				# Theme based on tmuxline
-				#source-file ~/.tmux/tmuxline.tmux
+# Go to last window
+bind-key -n M-w last-window
 
-				#################
-				## Status line ##
-				#################
-				# Force utf-8
-				set -gq status-utf8 on
+###########
+## Panes ##
+###########
+# Selecting panes by using C-x
+bind-key -n F1 select-pane -t 1
+bind-key -n F2 select-pane -t 2
+bind-key -n F3 select-pane -t 3
+bind-key -n F4 select-pane -t 4
+bind-key -n F5 select-pane -t 5
+bind-key -n F6 select-pane -t 6
+bind-key -n F7 select-pane -t 7
+bind-key -n F8 select-pane -t 8
+bind-key -n F9 select-pane -t 9
+bind-key -n F10 select-pane -t 0
 
-				# Refresh every minute
-				set -g status-interval 30
+# Enable / disable pane synchronization
+# Note: if you don't specify on / off, the option is toggled
+bind -n "M-e" setw synchronize-panes
+
+bind -n M-h run "(tmux display-message -p '#{pane_title}' | grep -iq vim && tmux send-keys C-h) || tmux select-pane -L"
+bind -n M-j run "(tmux display-message -p '#{pane_title}' | grep -iq vim && tmux send-keys C-j) || tmux select-pane -D"
+bind -n M-k run "(tmux display-message -p '#{pane_title}' | grep -iq vim && tmux send-keys C-k) || tmux select-pane -U"
+bind -n M-l run "(tmux display-message -p '#{pane_title}' | grep -iq vim && tmux send-keys C-l) || tmux select-pane -R"
+
+bind -n "M-a" if-shell "tmux select-window -t 1" "" "new-window -t 1"
+bind -n "M-s" if-shell "tmux select-window -t 2" "" "new-window -t 2"
+bind -n "M-d" if-shell "tmux select-window -t 3" "" "new-window -t 3"
+bind -n "M-f" if-shell "tmux select-window -t 4" "" "new-window -t 4"
+bind -n "M-u" if-shell "tmux select-window -t 5" "" "new-window -t 5"
+bind -n "M-i" if-shell "tmux select-window -t 6" "" "new-window -t 6"
+bind -n "M-o" if-shell "tmux select-window -t 7" "" "new-window -t 7"
+bind -n "M-p" if-shell "tmux select-window -t 8" "" "new-window -t 8"
+
+bind -n "M-0" select-pane -t 'bottom-right' \; split-window \; run-shell 'tmux select-layout tiled' #\; send escape
+
+bind -r "M-<" swap-window -d -t -1
+bind -r "M->" swap-window -d -t +1
+
+# Close a window/pane with Alt+Shift+q
+bind -n "M-Q" kill-pane
+
+################
+## Appearance ##
+################
+# Show notices when there is activity on another window
+setw -g monitor-activity on
+set -g visual-activity off
+# Visual bell
+set -g visual-bell on
+
+# Theme based on tmuxline
+#source-file ~/.tmux/tmuxline.tmux
+
+#################
+## Status line ##
+#################
+# Force utf-8
+set -gq status-utf8 on
+
+# Refresh every minute
+set -g status-interval 30
       '';
       # https://rycee.gitlab.io/home-manager/options.html
       plugins = with pkgs; [
         tmuxPlugins.gruvbox
         tmuxPlugins.vim-tmux-navigator
-        {
-          plugin = tmuxPlugins.tilish;
-          extraConfig = ''
-						# Settings for tmux-tilish
-						set -g @tilish-shiftnum '!@#$%^&*()'
-						set -g @tilish-dmenu 'on'
-						set -g @tilish-default 'tiled'
-						
-						#########################
-            ## QTile-like bindings ##
-						#########################
-						# Switch to workspace via Alt + #.
-						#bind_switch "${mod}a" 1
-						#bind_switch "${mod}s" 2
-						#bind_switch "${mod}d" 3
-						#bind_switch "${mod}f" 4
-						#bind_switch "${mod}u" 5
-						#bind_switch "${mod}i" 6
-						#bind_switch "${mod}o" 7
-						#bind_switch "${mod}p" 8
-          '';
-        }
+#         {
+#           plugin = tmuxPlugins.tilish;
+#           extraConfig = ''
+# # settings for tmux-tilish
+# set -g @tilish-shiftnum "!@#$%^&*()"
+# set -g @tilish-dmenu "on"
+# set -g @tilish-default "tiled"
+#
+# ## Read user options.
+# #for opt in default dmenu easymode navigate navigator prefix shiftnum
+# #do
+# #	export "$opt"="$(tmux show-option -gv @tilish-"$opt" 2>/dev/null)"
+# #done
+# #
+# ## Determine modifier vs. prefix key.
+# #if [ -z "''${prefix:-}" ]
+# #then
+# #  bind="bind -n"
+# #  mod="M-"
+# #else
+# #  bind="bind -rT tilish"
+# #  mod=""
+# #fi
+#
+# # Define core functionality {{{
+# bind_switch () {
+# 	# Bind keys to switch between workspaces.
+# 	tmux $bind "$1" \
+# 		if-shell "tmux select-window -t :$2" "" "new-window -t :$2"
+# }
+#
+# ## Define keybindings
+# ## Define a prefix key.
+# #if [ -n "$prefix" ]
+# #then
+# #	tmux bind -n "$prefix" switch-client -T tilish
+# #fi
+#
+# #########################
+# ## qtile-like bindings ##
+# #########################
+# # switch to workspace via alt + #.
+# #bind_switch "''${mod}a" 1
+# #bind_switch "''${mod}s" 2
+# #bind_switch "''${mod}d" 3
+# #bind_switch "''${mod}f" 4
+# #bind_switch "''${mod}u" 5
+# #bind_switch "''${mod}i" 6
+# #bind_switch "''${mod}o" 7
+# #bind_switch "''${mod}p" 8
+# bind_switch "M-a" 1
+# bind_switch "M-s" 2
+# bind_switch "M-d" 3
+# bind_switch "M-f" 4
+# bind_switch "M-u" 5
+# bind_switch "M-i" 6
+# bind_switch "M-o" 7
+# bind_switch "M-p" 8
+#           '';
+#         }
         tmuxPlugins.resurrect
       ];
     };
