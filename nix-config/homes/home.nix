@@ -89,6 +89,7 @@
       unzip
       wget
       xdg-utils
+      xsel
 
       # Fonts
       fontconfig
@@ -146,6 +147,9 @@ set -g history-limit 100000
 # Ensure window titles get renamed automatically
 setw -g automatic-rename on
 set -g set-titles on
+
+# Activate the clipboard
+set -g set-clipboard on
 
 ##################
 ## Key bindings ##
@@ -236,6 +240,7 @@ set -g status-interval 30
       plugins = with pkgs; [
         tmuxPlugins.gruvbox
         tmuxPlugins.vim-tmux-navigator
+        tmuxPlugins.yank
 #         {
 #           plugin = tmuxPlugins.tilish;
 #           extraConfig = ''
