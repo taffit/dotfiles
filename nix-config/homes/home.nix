@@ -44,6 +44,7 @@
       go
       graphviz
       httpie
+      hyperfine
       (nerdfonts.override { fonts = [
         "FantasqueSansMono" "FiraCode" "FiraMono"
       ]; })
