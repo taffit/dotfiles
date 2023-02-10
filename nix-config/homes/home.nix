@@ -193,10 +193,15 @@ bind-key -n F10 select-pane -t 0
 # Note: if you don't specify on / off, the option is toggled
 bind -n "M-e" setw synchronize-panes
 
-bind -n M-h run "(tmux display-message -p '#{pane_title}' | grep -iq vim && tmux send-keys C-h) || tmux select-pane -L"
-bind -n M-j run "(tmux display-message -p '#{pane_title}' | grep -iq vim && tmux send-keys C-j) || tmux select-pane -D"
-bind -n M-k run "(tmux display-message -p '#{pane_title}' | grep -iq vim && tmux send-keys C-k) || tmux select-pane -U"
-bind -n M-l run "(tmux display-message -p '#{pane_title}' | grep -iq vim && tmux send-keys C-l) || tmux select-pane -R"
+# bind -n M-h run "(tmux display-message -p '#{pane_title}' | grep -iq vim && tmux send-keys C-h) || tmux select-pane -L"
+# bind -n M-j run "(tmux display-message -p '#{pane_title}' | grep -iq vim && tmux send-keys C-j) || tmux select-pane -D"
+# bind -n M-k run "(tmux display-message -p '#{pane_title}' | grep -iq vim && tmux send-keys C-k) || tmux select-pane -U"
+# bind -n M-l run "(tmux display-message -p '#{pane_title}' | grep -iq vim && tmux send-keys C-l) || tmux select-pane -R"
+# Just next/previous pane
+# bind -n M-j run "(tmux display-message -p '#{pane_title}' | grep -iq nvim && tmux send-keys C-j) || tmux select-pane -t :.+"
+# bind -n M-k run "(tmux display-message -p '#{pane_title}' | grep -iq nvim && tmux send-keys C-k) || tmux select-pane -t :.-"
+bind -n "M-j" select-pane -t :.+
+bind -n "M-k" select-pane -t :.-
 
 bind -n "M-a" if-shell "tmux select-window -t 1" "" "new-window -t 1"
 bind -n "M-s" if-shell "tmux select-window -t 2" "" "new-window -t 2"
@@ -212,8 +217,8 @@ bind -n "M-0" select-pane -t 'bottom-right' \; split-window \; run-shell 'tmux s
 bind -r "M-<" swap-window -d -t -1
 bind -r "M->" swap-window -d -t +1
 
-# Close a window/pane with Alt+Shift+q
-bind -n "M-Q" kill-pane
+# Close a window/pane with Alt+x
+bind -n "M-x" kill-pane
 
 ################
 ## Appearance ##
@@ -239,7 +244,7 @@ set -g status-interval 30
       # https://rycee.gitlab.io/home-manager/options.html
       plugins = with pkgs; [
         tmuxPlugins.gruvbox
-        tmuxPlugins.vim-tmux-navigator
+#        tmuxPlugins.vim-tmux-navigator
         tmuxPlugins.yank
 #         {
 #           plugin = tmuxPlugins.tilish;
