@@ -17,7 +17,8 @@ set.shiftround = true             -- use multiple of shiftwidth when indenting w
 --set.listchars = 'eol:⏎,tab:»·,trail:×,nbsp:•'  -- make tab, etc visible
 --set.listchars = 'trail:·,precedes:«,extends:»,eol:¬,tab:\|\·'
 --set.listchars = 'tab:\\U0001f892·,trail:\\u2716,precedes:«,extends:»,eol:¬,nbsp:•'
-set.listchars = 'tab:\\U0001f892·,trail:\\u2716,precedes:«,extends:»,eol:¶,nbsp:•'
+--set.listchars = 'tab:\\U0001f892·,trail:\\u2716,precedes:«,extends:»,eol:¶,nbsp:•'
+set.listchars = 'tab:\\u21e5\\ ,trail:\\u00d7,precedes:«,extends:»,eol:¶,space:·,nbsp:␣'
 
 set.history = 1000           -- bigger history
 set.scrolloff = 8            -- keeping more context on scrolling outside
@@ -26,8 +27,8 @@ set.visualbell = true              -- enabling visual bell instead of bell
 set.background = 'dark'        -- Set a dark background
 set.wrap = true                -- Wrap long lines
 set.breakindent = true                -- Preserve indentation of virtual lines (if `wrap` is enabled)
-set.clipboard = set.clipboard + 'unnamed'
-set.clipboard = set.clipboard + 'unnamedplus'  -- Use clipboard for unnamed register
+--set.clipboard = set.clipboard + 'unnamed'
+set.clipboard = 'unnamedplus'  -- Use clipboard for unnamed register
 
 -- Search settings
 set.ignorecase = true             -- Case insensitive search

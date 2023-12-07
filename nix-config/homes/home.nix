@@ -38,6 +38,7 @@
       docker-compose
       fd  # Better file find, used by telescope
       gcc
+      gcc-unwrapped # for libstrdc++.so.6
       git
       glibc
       gnumake
@@ -45,6 +46,12 @@
       graphviz
       httpie
       hyperfine
+      libxml2
+      libxslt
+      libzip
+      lua5_3
+      luarocks-nix
+      #(lua5_3Packages.luarocks)
       (nerdfonts.override { fonts = [
         "FantasqueSansMono" "FiraCode" "FiraMono"
       ]; })
@@ -55,8 +62,9 @@
       nodePackages.npm
       nodePackages.prettier
       openldap
+      p7zip
       python3Full
-      #(python3.withPackages (ps: with ps; [
+      # (python3.withPackages (ps: with ps; [
       #  #jax
       #  #jaxlib
       #  #pytorch
@@ -72,14 +80,15 @@
       #  python-ldap
       #  #ipython
       #  #isort
-      #  #numpy
-      #  #pandas
-      #  #jupyter
+      # numpy
+      # pandas
+      # jupyter
+      # jupyterlab
       #  #scipy
       #  setuptools
       #  wheel
-      #])
-      #)a
+      # ])
+      # )
       openssl
       ripgrep  # used by telescope
       rclone
@@ -91,6 +100,7 @@
       wget
       xdg-utils
       xsel
+      zlib
 
       # Fonts
       fontconfig
@@ -217,6 +227,9 @@ bind -n "M-0" select-pane -t 'bottom-right' \; split-window \; run-shell 'tmux s
 
 bind -r "M-<" swap-window -d -t -1
 bind -r "M->" swap-window -d -t +1
+
+# Maximizing/minimizing pane
+bind -n "M-m" resize-pane -Z
 
 # Close a window/pane with Alt+x
 bind -n "M-x" kill-pane

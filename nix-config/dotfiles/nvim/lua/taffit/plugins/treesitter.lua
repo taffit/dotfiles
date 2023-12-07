@@ -37,6 +37,17 @@ return {
       highlight = {
         enable = true,
 
+        disable = function(lang, buf)
+          -- You can also use `vim.api.nvim_buf_line_count(buf)` if you want to use the LOC as measure
+          local max_filesize = 100 * 1024 -- 100 KB
+          local js_max_filesize = 50 * 1024 -- 50 KB
+          local sql_max_filesize = 100 * 1024 -- 50 KB
+          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+          if ok and stats and (stats.size > max_filesize or (lang == "js" and stats.size > js_max_filesize) or (lang == "sql" and stats.size > sql_max_filesize)) then
+            return true
+          end
+        end,
+
         -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
         -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
         -- Using this option may slow down your editor, and you may see some duplicate highlights.
