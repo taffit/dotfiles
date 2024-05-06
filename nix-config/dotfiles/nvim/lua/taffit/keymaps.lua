@@ -41,9 +41,13 @@ map('n', '<leader>rf', ':e<cr>')
 map('n', '<leader>cd', ':cd %:p:h<cr>:pwd<cr>')
 -- Hitting <leader>b will invoke buffers und then you have to select just the number
 --:nnoremap <leader>b :buffers<CR>:buffer<Space>
-map('n', '<leader>b', ':ls<cr>:b<space>')
+map('n', '<leader><leader>b', ':ls<cr>:b<space>')
 -- Just listing the open buffers
 map('n', '<leader>ls', ':ls<cr>')
+-- Next buffer
+map('n', '<leader>bb', ':bprevious<cr>')
+-- Next buffer
+map('n', '<leader>nn', ':bnext<cr>')
 -- Delete the current buffer
 map('n', '<leader>bd', ':bdelete<cr>')
 -- Just close the window, not the buffer, with <leader>wq
