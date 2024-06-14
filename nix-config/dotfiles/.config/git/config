@@ -1,0 +1,12 @@
+[credential "https://gist.github.com"]
+	helper = "/nix/store/y9d81y8scs4agaprfdjlnhspl7fw06i3-gh-2.49.0/bin/gh auth git-credential"
+
+[credential "https://github.com"]
+	helper = "/nix/store/y9d81y8scs4agaprfdjlnhspl7fw06i3-gh-2.49.0/bin/gh auth git-credential"
+
+[init]
+	defaultBranch = "main"
+
+[user]
+	email = ""
+	name = ""

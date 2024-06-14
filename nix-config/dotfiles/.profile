@@ -32,3 +32,4 @@ if service docker status 2>&1 | grep -q "is not running"; then
 fi
 
 if [ -e /home/sysop/.nix-profile/etc/profile.d/nix.sh ]; then . /home/sysop/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
