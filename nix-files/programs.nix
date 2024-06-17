@@ -75,8 +75,8 @@
   #};
   xdg = {
     enable = true;
-    # configFile."nvim".source = ./dotfiles/.config/nvim;
-    configFile."nvim".source = ${vars.dotfiles}/.config/nvim;
+    configFile."nvim".source = ./dotfiles/.config/nvim;
+    #configFile."nvim".source = ${vars.dotfiles}/.config/nvim;
     configFile."tmux".source = ./dotfiles/.config/tmux;
   };
 }
