@@ -11,7 +11,7 @@ return {
         "css",
         "elixir",
         "graphql",
-        "help",
+        "vimdoc",
         "html",
         "javascript",
         "json",
