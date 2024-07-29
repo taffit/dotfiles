@@ -125,3 +125,4 @@ fi
 # Commands that should be applied only for interactive shells.
 [[ $- == *i* ]] || return
 
+eval "$(/home/sysop/.local/bin/mise activate bash)"
