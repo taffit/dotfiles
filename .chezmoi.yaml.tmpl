@@ -1,0 +1,13 @@
+{{/* Pre-setting some configuration (and finding out what's possible) */}}
+{{- $email := promptStringOnce . "email" "Email address" -}}
+{{- $work := false -}}{{/* true for work computer */}}
+{{- $hostname := .chezmoi.hostname -}}
+{{- if eq $hostname "ksdc" -}}
+{{-   $work = true -}}
+{{- end -}}
+
+data:
+  email: {{ email | quote }}
+  work: {{ $work }}
+  hostname: {{ $hostname }}
+
