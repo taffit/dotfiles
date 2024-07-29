@@ -2,7 +2,9 @@
 {{- $email := promptStringOnce . "email" "Email address" -}}
 {{- $work := false -}}{{/* true for work computer */}}
 {{- $hostname := .chezmoi.hostname -}}
-{{- if eq $hostname "ksdc" -}}
+{{/* To test if the sprig-function works as well */}}
+{{/*- if eq $hostname "ksdc" -*/}}
+{{- if contains "-NB-" $hostname -}}
 {{-   $work = true -}}
 {{- end -}}
 
