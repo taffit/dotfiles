@@ -5,8 +5,10 @@
 [tools]
 # global tool versions go here, if pasted into ~/.config/mise/config.toml
 # you can set these with `mise use -g`
-node = 'lts'
-python = '3.11'
+node = "latest"
+lua = "5.1.5"
+python = "3.11"
+go = "latest"
 # neovim = { version='latest' }
 # tmux = { version='latest' }
 
