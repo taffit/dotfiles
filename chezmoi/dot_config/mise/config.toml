@@ -9,6 +9,9 @@ node = "latest"
 lua = "5.1.5"
 python = "3.11"
 go = "latest"
+neovim = "latest"
+fd = "latest"
+ripgrep = "latest"
 # neovim = { version='latest' }
 # tmux = { version='latest' }
 
@@ -23,7 +26,6 @@ go = "latest"
 # specify a custom repo url
 # note this will only be used if the plugin does not already exist
 # python = 'https://github.com/asdf-community/asdf-python'
-# neovim = 'https://github.com/richin13/asdf-neovim'
 
 [alias.node] # project-local aliases
 # my_custom_node = '20'
