@@ -9,3 +9,6 @@ alias cme='chezmoi edit'
 
 # mise
 
+# docker
+alias dc='docker compose'
+
