@@ -1,0 +1,5 @@
+-- Duck head prompt
+prompt 'O> '
+-- Example SQL statement
+select 'Begin quacking now '||cast(now() as string) as "Ready, Set, ...";
+
