@@ -1,0 +1,12 @@
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+#alias l='ls -als -color'
+
+# chezmoi
+alias cm=chezmoi
+
+# mise
+
