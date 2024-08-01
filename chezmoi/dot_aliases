@@ -1,3 +1,7 @@
+# Directory handling
+alias '..'='cd ..'
+alias '...'='cd ../..'
+
 # some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
@@ -11,4 +15,7 @@ alias cme='chezmoi edit'
 
 # docker
 alias dc='docker compose'
+
+# nnn
+alias n=nnn
 
