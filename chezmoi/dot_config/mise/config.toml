@@ -26,6 +26,7 @@ ripgrep = "latest"
 # specify a custom repo url
 # note this will only be used if the plugin does not already exist
 # python = 'https://github.com/asdf-community/asdf-python'
+nnn = 'https://github.com/benit8/asdf-nnn'
 
 [alias.node] # project-local aliases
 # my_custom_node = '20'
