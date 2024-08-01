@@ -12,6 +12,7 @@ go = "latest"
 neovim = "latest"
 fd = "latest"
 ripgrep = "latest"
+nnn = "latest"
 # neovim = { version='latest' }
 # tmux = { version='latest' }
 
