@@ -5,13 +5,18 @@ alias '...'='cd ../..'
 # some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
-alias l='ls -alsF --color'
+alias l='ls -alsF --color=auto'
 
 # chezmoi
 alias cm=chezmoi
 alias cme='chezmoi edit'
+alias cme='chezmoi apply'
+alias cmea='chezmoi edit --apply'
+alias cmgs='chezmoi git status'
+alias cmga='chezmoi git add .'
 
-# mise
+# pkgx
+alias px=pkgx
 
 # docker
 alias dc='docker compose'
