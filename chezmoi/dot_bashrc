@@ -117,12 +117,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# spack.io
-if [ -f ~/git/spack/share/spack/setup-env.sh ]; then
-    . ~/git/spack/share/spack/setup-env.sh
-fi
-
 # Commands that should be applied only for interactive shells.
 [[ $- == *i* ]] || return
 
-eval "$(pkgx --shellcode)"  #docs.pkgx.sh/shellcode
+#eval "$(pkgx --shellcode)"  #docs.pkgx.sh/shellcode
