@@ -29,7 +29,7 @@ return {
       client.resolved_capabilities.document_formatting = false
     end
 
-    lsp_zero.preset("recommended")
+    --lsp_zero.preset("lsp-compe") -- produces an error
 
     local cmp = require('cmp')
     local cmp_action = require('lsp-zero').cmp_action()
@@ -64,26 +64,14 @@ return {
 	-- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         ['<CR>'] = cmp.mapping.confirm({select = true}),
         ['<C-e>'] = cmp.mapping.abort(),
-	['<Tab>'] = cmp_action.tab_complete(),
-        ['<S-Tab>'] = cmp_action.select_prev_or_fallback(),
-        ['<Up>'] = cmp_action.select_prev_or_fallback(),
-        ['<Down>'] = cmp_action.tab_complete(),
---        ['<Up>'] = cmp.mapping.select_prev_item({behavior = 'select'}),
---        ['<Down>'] = cmp.mapping.select_next_item({behavior = 'select'}),
-	--['<C-p>'] = cmp.mapping(function()
-          --if cmp.visible() then
-            --cmp.select_prev_item({behavior = 'insert'})
-          --else
-            --cmp.complete()
-          --end
-        --end),
-        --['<C-n>'] = cmp.mapping(function()
-          --if cmp.visible() then
-            --cmp.select_next_item({behavior = 'insert'})
-          --else
-            --cmp.complete()
-          --end
-        --end),
+	--['<Tab>'] = cmp_action.tab_complete(),
+        --['<S-Tab>'] = cmp_action.select_prev_or_fallback(),
+        --['<Down>'] = cmp_action.tab_complete(),
+        --['<Up>'] = cmp_action.select_prev_or_fallback(),
+        ['<Up>'] = cmp.mapping.select_prev_item({behavior = 'select'}),
+        ['<Down>'] = cmp.mapping.select_next_item({behavior = 'select'}),
+        ['<Tab>'] = cmp.mapping.select_prev_item({behavior = 'select'}),
+        ['<S-Tab>'] = cmp.mapping.select_next_item({behavior = 'select'}),
       }),
       snippet = {
         expand = function(args)
@@ -127,9 +115,9 @@ return {
       matching = { disallow_symbol_nonprefix_matching = false }
     })
 
-    lsp_zero.set_preferences({
-      sign_icons = { }
-    })
+    --lsp_zero.set_preferences({
+      --sign_icons = { }
+    --})
 
     lsp_zero.on_attach(function(client, bufnr)
       local opts = {buffer = bufnr, remap = false}
