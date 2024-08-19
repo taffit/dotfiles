@@ -36,7 +36,10 @@ return {
     local cmp_select = {behavior = cmp.SelectBehavior.Select}
     local lspkind = require('lspkind')
     cmp.setup({
-      preselect = 'item',
+      preselect = cmp.PreselectMode.Item,
+      completion = {
+        completeopt = 'menu,menuone,preview,noinsert'
+      },
       window = {
         completion = cmp.config.window.bordered(),
         documentation = cmp.config.window.bordered(),
@@ -64,14 +67,15 @@ return {
 	-- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         ['<CR>'] = cmp.mapping.confirm({select = true}),
         ['<C-e>'] = cmp.mapping.abort(),
+        ['<Esc>'] = cmp.mapping.abort(),
 	--['<Tab>'] = cmp_action.tab_complete(),
         --['<S-Tab>'] = cmp_action.select_prev_or_fallback(),
         --['<Down>'] = cmp_action.tab_complete(),
         --['<Up>'] = cmp_action.select_prev_or_fallback(),
         ['<Up>'] = cmp.mapping.select_prev_item({behavior = 'select'}),
         ['<Down>'] = cmp.mapping.select_next_item({behavior = 'select'}),
-        ['<Tab>'] = cmp.mapping.select_prev_item({behavior = 'select'}),
-        ['<S-Tab>'] = cmp.mapping.select_next_item({behavior = 'select'}),
+        ['<S-Tab>'] = cmp.mapping.select_prev_item({behavior = 'select'}),
+        ['<Tab>'] = cmp.mapping.select_next_item({behavior = 'select'}),
       }),
       snippet = {
         expand = function(args)
