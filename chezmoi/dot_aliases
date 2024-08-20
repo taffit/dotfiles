@@ -12,6 +12,7 @@ alias cm=chezmoi
 alias cme='chezmoi edit'
 alias cma='chezmoi apply'
 alias cmea='chezmoi edit --apply'
+alias cmg='chezmoi git'
 alias cmgs='chezmoi git status'
 alias cmga='chezmoi git add .'
 
