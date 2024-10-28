@@ -9,13 +9,15 @@ python = ['3.12']
 tmux = 'latest'
 lua = ['5.1', '5.3', '5.4']
 fd = 'latest'
+lazygit = 'latest'
 ripgrep = 'latest'
 neovim = 'latest'
 
 [plugins]
 fd = 'https://gitlab.com/wt0f/asdf-fd'
-ripgrep = 'https://gitlab.com/wt0f/asdf-ripgrep'
+lazygit = 'https://github.com/nklmilojevic/asdf-lazygit'
 neovim = 'https://github.com/richin13/asdf-neovim'
+ripgrep = 'https://gitlab.com/wt0f/asdf-ripgrep'
 tmux = 'https://github.com/aphecetche/asdf-tmux'
 
 [settings]
