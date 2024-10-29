@@ -13,7 +13,6 @@ lazygit = 'latest'
 ripgrep = 'latest'
 neovim = 'latest'
 bottom = 'latest'
-ctop = 'latest'
 
 [plugins]
 fd = 'https://gitlab.com/wt0f/asdf-fd'
