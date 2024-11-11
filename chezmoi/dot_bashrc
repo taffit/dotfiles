@@ -120,5 +120,8 @@ fi
 # Commands that should be applied only for interactive shells.
 [[ $- == *i* ]] || return
 
+# gsamokovarov/jump
+eval "$(jump shell bash)"
+
 #eval "$(pkgx --shellcode)"  #docs.pkgx.sh/shellcode
 eval "$(~/.local/bin/mise activate bash)"
