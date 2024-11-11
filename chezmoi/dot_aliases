@@ -27,3 +27,6 @@ alias n=nnn
 
 # Convenience aliases
 alias venv='. .venv/bin/activate'
+
+# gsamokovarov/jump (to be installed manually)
+alias j=jump
