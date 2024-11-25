@@ -117,6 +117,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# Activating ajeetdsouza/zoxide
+eval "$(zoxide init bash)"
+
 # Commands that should be applied only for interactive shells.
 [[ $- == *i* ]] || return
 

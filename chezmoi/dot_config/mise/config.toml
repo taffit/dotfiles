@@ -16,15 +16,15 @@ bottom = 'latest'
 glow = 'latest'
 zoxide = 'latest'
 
-[plugins]
-fd = 'https://gitlab.com/wt0f/asdf-fd'
-lazygit = 'https://github.com/nklmilojevic/asdf-lazygit'
-neovim = 'https://github.com/richin13/asdf-neovim'
-ripgrep = 'https://gitlab.com/wt0f/asdf-ripgrep'
-tmux = 'https://github.com/aphecetche/asdf-tmux'
-bottom = 'https://github.com/carbonteq/asdf-btm'
-ctop = 'https://github.com/bcicen/ctop'
-zoxide = 'https://github.com/ajeetdsouza/zoxide'
+# [plugins]
+# fd = 'https://gitlab.com/wt0f/asdf-fd'
+# lazygit = 'https://github.com/nklmilojevic/asdf-lazygit'
+# neovim = 'https://github.com/richin13/asdf-neovim'
+# ripgrep = 'https://gitlab.com/wt0f/asdf-ripgrep'
+# tmux = 'https://github.com/aphecetche/asdf-tmux'
+# bottom = 'https://github.com/carbonteq/asdf-btm'
+# ctop = 'https://github.com/bcicen/ctop'
+# zoxide = 'https://github.com/ajeetdsouza/zoxide'
 
 [settings]
 env_file = '.env' # load env vars from a dotenv file, see `MISE_ENV_FILE`
