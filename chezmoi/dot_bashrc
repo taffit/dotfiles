@@ -117,11 +117,12 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Activating ajeetdsouza/zoxide
-eval "$(zoxide init bash)"
-
 # Commands that should be applied only for interactive shells.
 [[ $- == *i* ]] || return
 
 #eval "$(pkgx --shellcode)"  #docs.pkgx.sh/shellcode
 eval "$(~/.local/bin/mise activate bash)"
+
+# Activating ajeetdsouza/zoxide
+eval "$(zoxide init bash)"
+
