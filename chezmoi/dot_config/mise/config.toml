@@ -14,7 +14,7 @@ ripgrep = 'latest'
 neovim = 'latest'
 bottom = 'latest'
 glow = 'latest'
-zoxide = 'latest'
+zoxide = "latest"
 
 # [plugins]
 # fd = 'https://gitlab.com/wt0f/asdf-fd'
