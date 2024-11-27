@@ -129,3 +129,6 @@ eval "$(mise hook-env)"
 # Activating ajeetdsouza/zoxide
 eval "$(zoxide init bash)"
 
+# Activating starship.rs
+eval "$(starship init bash)"
+

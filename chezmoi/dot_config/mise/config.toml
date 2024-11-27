@@ -1,19 +1,24 @@
 [env]
 EDITOR = 'nvim'
+# The following can be used in a local .mise.toml for automatically enabling .venv
+# _.python.venv = { path = ".venv", create = false }
 
 [tools]
 # global tool versions go here
 # you can set these with `mise use -g`
+bottom = 'latest'
+difftastic = "latest"
+fd = 'latest'
+glow = 'latest'
+lazygit = 'latest'
+lua = ['5.1', '5.3', '5.4']
+neovim = 'latest'
 node = 'latest'
 python = ['3.12']
-tmux = 'latest'
-lua = ['5.1', '5.3', '5.4']
-fd = 'latest'
-lazygit = 'latest'
 ripgrep = 'latest'
-neovim = 'latest'
-bottom = 'latest'
-glow = 'latest'
+starship = 'latest'
+tmux = 'latest'
+uv = "latest"
 zoxide = "latest"
 
 # [plugins]
@@ -31,4 +36,4 @@ env_file = '.env' # load env vars from a dotenv file, see `MISE_ENV_FILE`
 experimental = true # enable experimental features
 
 # configure messages displayed when entering directories with config files
-status = { missing_tools = "if_other_versions_installed", show_env = true, show_tools = true }
+status = { missing_tools = "if_other_versions_installed", show_env = true, show_tools = false }
