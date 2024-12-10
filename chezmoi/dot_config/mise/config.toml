@@ -11,6 +11,7 @@ bottom = 'latest'
 difftastic = "latest"
 fd = 'latest'
 glow = 'latest'
+httpie-go = 'latest'
 lazygit = 'latest'
 lua = ['5.1', '5.3', '5.4']
 neovim = 'latest'
