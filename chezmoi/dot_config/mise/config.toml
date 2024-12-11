@@ -12,6 +12,7 @@ difftastic = "latest"
 fd = 'latest'
 glow = 'latest'
 httpie-go = 'latest'
+java = 'temurin-23'
 lazygit = 'latest'
 lua = ['5.1', '5.3', '5.4']
 neovim = 'latest'
