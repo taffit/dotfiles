@@ -17,6 +17,7 @@ lazygit = 'latest'
 lua = ['5.1', '5.3', '5.4']
 neovim = 'latest'
 node = 'latest'
+pandoc = 'latest'
 python = ['3.12']
 ripgrep = 'latest'
 starship = 'latest'
