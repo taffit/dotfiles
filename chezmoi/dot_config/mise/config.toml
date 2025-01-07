@@ -11,7 +11,8 @@ bottom = 'latest'
 ctop = 'latest'
 difftastic = "latest"
 fd = 'latest'
-glow = 'latest'
+# The asdf-glow plugin needs an update
+#glow = 'latest'
 httpie-go = 'latest'
 java = 'temurin-23'
 lazygit = 'latest'
