@@ -11,10 +11,10 @@ bottom = 'latest'
 ctop = 'latest'
 difftastic = "latest"
 fd = 'latest'
-# The asdf-glow plugin needs an update
-#glow = 'latest'
+glow = 'aqua:charmbracelet/glow'
 httpie-go = 'latest'
 java = 'temurin-23'
+lazydocker = 'latest'
 lazygit = 'latest'
 lua = ['5.1', '5.3', '5.4']
 neovim = 'latest'
