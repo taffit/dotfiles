@@ -1,45 +1,45 @@
 [env]
-EDITOR = 'nvim'
+EDITOR = "nvim"
 # The following can be used in a local .mise.toml for automatically enabling .venv
 # _.python.venv = { path = ".venv", create = false }
 
 [tools]
 # global tool versions go here
 # you can set these with `mise use -g`
-bat = 'latest'
-bottom = 'latest'
-ctop = 'latest'
+bat = "latest"
+bottom = "latest"
+ctop = "latest"
 difftastic = "latest"
-fd = 'latest'
-glow = 'aqua:charmbracelet/glow'
-httpie-go = 'latest'
-java = 'temurin-23'
-lazydocker = 'latest'
-lazygit = 'latest'
-lua = ['5.1', '5.3', '5.4']
-neovim = 'latest'
-node = 'latest'
-pandoc = 'latest'
-python = ['3.12']
-ripgrep = 'latest'
-starship = 'latest'
-tmux = 'latest'
+fd = "latest"
+"aqua:charmbracelet/glow" = "latest"
+httpie-go = "latest"
+java = "temurin-23"
+lazydocker = "latest"
+lazygit = "latest"
+lua = ["5.1", "5.3", "5.4"]
+neovim = "latest"
+node = "latest"
+pandoc = "latest"
+python = ["3.12"]
+ripgrep = "latest"
+starship = "latest"
+tmux = "latest"
 uv = "latest"
 zellij = "latest"
 zoxide = "latest"
 
 # [plugins]
-# fd = 'https://gitlab.com/wt0f/asdf-fd'
-# lazygit = 'https://github.com/nklmilojevic/asdf-lazygit'
-# neovim = 'https://github.com/richin13/asdf-neovim'
-# ripgrep = 'https://gitlab.com/wt0f/asdf-ripgrep'
-# tmux = 'https://github.com/aphecetche/asdf-tmux'
-# bottom = 'https://github.com/carbonteq/asdf-btm'
-# ctop = 'https://github.com/bcicen/ctop'
-# zoxide = 'https://github.com/ajeetdsouza/zoxide'
+# fd = "https://gitlab.com/wt0f/asdf-fd"
+# lazygit = "https://github.com/nklmilojevic/asdf-lazygit"
+# neovim = "https://github.com/richin13/asdf-neovim"
+# ripgrep = "https://gitlab.com/wt0f/asdf-ripgrep"
+# tmux = "https://github.com/aphecetche/asdf-tmux"
+# bottom = "https://github.com/carbonteq/asdf-btm"
+# ctop = "https://github.com/bcicen/ctop"
+# zoxide = "https://github.com/ajeetdsouza/zoxide"
 
 [settings]
-env_file = '.env' # load env vars from a dotenv file, see `MISE_ENV_FILE`
+env_file = ".env" # load env vars from a dotenv file, see `MISE_ENV_FILE`
 experimental = true # enable experimental features
 
 # configure messages displayed when entering directories with config files
