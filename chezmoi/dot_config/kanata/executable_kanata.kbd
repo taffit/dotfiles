@@ -1,0 +1,218 @@
+(defcfg
+  process-unmapped-keys		yes	;;|no| enable processing of keys that are not in defsrc, useful if mapping a few keys in defsrc instead of most of the keys on your keyboard. Without this, the tap-hold-release and tap-hold-press actions will not activate for keys that are not in defsrc. Disabled because some keys may not work correctly if they are intercepted. E.g. rctl/altgr on Windows; see the windows-altgr configuration item above for context.
+  ;;log-layer-changes    		yes	;;|no| overhead
+  ;;tray-icon ".\icon\transparent.png" ;; should activate for layers without icons like '5no-icn'
+  ;;opt                   	val  	  |≝|
+  ;;icon-match-layer-name   	yes  	;;|yes| match layer name to icon files even without an explicit (icon name.ico) config
+  ;;tooltip-layer-changes   	yes  	;;|false|
+  ;;tooltip-show-blank      	yes  	;;|no|
+  ;;tooltip-duration        	500  	;;|500|
+  ;;tooltip-size            	24,24	;;|24 24|
+  notify-cfg-reload       	yes  	;;|yes|
+  notify-cfg-reload-silent	no   	;;|no|
+  notify-error            	yes  	;;|yes|
+  danger-enable-cmd yes
+  windows-altgr add-lctl-release
+)
+
+(defvar
+  tap-time 150
+  longer-tap-time 200
+  hold-time 250
+  longer-hold-time 300
+  tt $tap-time
+  ltt $longer-tap-time
+  ht $hold-time
+  lht $longer-hold-time
+  left-hand-keys (
+    q w e r t
+    a s d f g
+    z x c v b
+  )
+  right-hand-keys (
+    y u i o p
+    h j k l ;
+    n m , . /
+  )
+)
+
+;; defsrc is still necessary
+(defsrc
+  esc f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
+  grv 1 2 3 4 5 6 7 8 9 0 - = bspc
+  tab q w e r t y u i o p [ ] 
+  caps a s d f g h j k l ; ' ret
+  lsft z x c v b n m , . / rsft
+  lctl lmet lalt spc ralt rmet rctl
+  del home end
+)
+
+(deftemplate switch-input (input)
+  (cmd "C:\~NoInstall\System\Tools\ControlMyMonitor\ControlMyMonitor.exe" /SetValue "EB275U" 60 $input)
+)
+(deftemplate taphold (taptime holdtime key other-key)
+  (multi f24 (tap-hold $taptime $holdtime $key $other-key))
+)
+(deftemplate tapholdpresslayer (key layer-if-pressed)
+  (tap-hold-press 200 200 $key (layer-while-held $layer-if-pressed))
+)
+(deftemplate runscript (script)
+  (cmd (concat "./scripts/" $script ".exe"))
+)
+(deftemplate homerowmodquicktyping (char mod)
+  (switch 
+    ((key-timing 3 less-than 250)) $char break
+    () (tap-hold-release-timeout 200 500 $char $mod $char) break
+  )
+)
+(deftemplate homerowmod (timeouthold char mod)
+  (switch 
+    ((key-timing 3 less-than 140)) $char break
+    () (tap-hold-release 0 $timeouthold $char $mod) break
+  )
+)
+
+;; Ideas:
+;; - Something like "boss-key", i. e. a layer, where everything works normally
+
+(defalias
+  del-word (macro C-S-left bspc)
+  del-bspc (fork del @del-word (lsft rsft))
+  bspc-or-word (fork bspc @del-word (lmet rmet ralt))
+  middot (macro (unicode ·))
+  a (t! homerowmod $ht a lmet)
+  s (t! homerowmod $ht s lalt)
+  d (t! homerowmod $ht d lsft)
+  f (t! homerowmod $ht f lctl)
+  j (t! homerowmod $ht j rctl)
+  k (t! homerowmod $ht k rsft)
+  l (t! homerowmod $ht l ralt)
+  ; (t! homerowmod $ht ; rmet)
+  * S-8
+  + S-=
+  cwrd (caps-word 2000)
+  cwrdt (caps-word-custom-toggle
+    2000
+    (a b c d e f g h i j k l m n o p q r s t u v w x y z - ')
+    (0 1 2 3 4 5 6 7 8 9 0 kp0 kp1 kp2 kp3 kp4 kp5 kp6 kp7 kp8 kp9 bspc del up down left rght)
+  )
+  paste-plain (fork (t! runscript paste_plain) (t! runscript paste_plain_type) (lsft rsft))
+  center-cursor (t! runscript center_mouse)
+  volume-up (t! runscript volume_up)
+  volume-down (t! runscript volume_down)
+  win-tab M-tab
+  chng-win (macro C-A-tab left)
+  cut C-x
+  copy C-c
+  paste C-v
+  undo C-z
+  redo C-y
+  caps-mod (t! tapholdpresslayer esc caps-layer)
+  grv-mod (t! tapholdpresslayer grv grv-layer)
+  ;;win-mod (t! tapholdpresslayer lmet win-layer)
+  ;;altgr-mod (t! tapholdpresslayer ralt altgr-layer)
+)
+
+;; Wrapping a top-level configuration item in a list beginning without
+;; (environment (env-var-name env-var-value) ...configuration...)
+;; will make the configuration only active if the environment variable matches.
+(environment (COMPUTERNAME YIELCO-NB-44)
+  (defalias
+    switch_hdmi1 (template-expand switch-input 17)
+    ;; t! is a shorthand for template-expand
+    switch_hdmi2 (t! switch-input 18)
+    switch_hdmi3 (t! switch-input 19)
+    switch_dp (t! switch-input 15)
+  )
+)
+(environment (COMPUTERNAME tafltpc)
+  (defalias
+    switch_hdmi1 (template-expand switch-input 17)
+    ;; t! is a shorthand for template-expand
+    switch_hdmi2 (t! switch-input 18)
+    switch_hdmi3 (t! switch-input 19)
+    switch_dp (t! switch-input 15)
+  )
+)
+
+(deflayer default
+  esc       f1 f2 f3 f4 f5 f6        f7 f8 f9 f10 f11 f12
+  @grv-mod  1  2  3  4  5  6         7  8  9  0   -   =  @bspc-or-word
+  tab       q  w  e  r  t            y u i o p [ ]
+  @caps-mod @a @s @d @f g            h @j @k @l @; ' ret
+  lsft      z x c v b                n m , . / rsft
+  lctl lmet lalt           spc       ralt rmet rctl
+  del home end
+)
+
+(deflayer caps-layer 
+  lrld     XX XX XX XX XX XX    XX XX XX XX XX XX
+  lrld     XX XX XX XX XX XX    XX XX XX XX @volume-down @volume-up @del-bspc
+  @win-tab XX @cwrdt XX XX XX    home C-left C-right end XX XX XX
+  XX       XX XX XX XX @center-cursor       left down up right XX XX _
+  _        @undo @cut @copy @paste-plain XX    @chng-win XX XX @middot XX _ 
+  _ _ _                      _                     _ _ _
+  _ _ _
+)
+
+(deflayer grv-layer
+  XX   XX XX XX XX XX XX   XX XX XX XX XX XX
+  XX   @switch_hdmi1 @switch_hdmi2 @switch_hdmi3 @switch_dp XX XX   XX @* /  0 XX XX @del-word
+  XX   XX XX XX XX XX      XX 7  8  9  - XX XX
+  XX   XX XX XX XX XX      0  4  5  6  + XX _
+  XX   XX XX XX XX XX      XX 1  2  3  . XX 
+  XX XX XX             _           XX XX XX
+  XX XX XX
+)
+
+#|
+(deflayer win-layer
+  _    _ _ _ _ _ _   _ _ _ _ _ _
+  _    _ _ _ _ _ _   _ _ _ _ _ _ _
+  _    _ _ _ _ _     _ _ _ _ _ _ _
+  _    _ _ _ _ _     @center-cursor _ _ _ _ _ _
+  _    _ _ _ @paste-plain _      _ _ _ _ _ _ 
+  _ _ _           _          _ _ _
+  _ _ _
+)
+
+(deflayer altgr-layer
+  _    _ _ _ _ _ _     _ _ _ _ _ _
+  _    _ _ _ _ _ _     _ _ _ _ _ _ @del-word
+  _    _ @cwrd _ _ _   _ _ _ _ _ _ _
+  _    _ _ _ _ _       @switch_hdmi1 @switch_hdmi2 @switch_hdmi3 @switch_dp _ _ _
+  _    _ _ _ _ _       _ _ _ @middot _ _ 
+  _ _ _            _         _ _ _
+  _ _ _
+)
+|#
+
+#|
+(deflayer default-keyboard
+  esc   f1 f2 f3 f4 f5 f6   f7 f8 f9 f10 f11 f12
+  grv   1 2 3 4 5 6         7 8 9 0 - = bspc
+  tab   q w e r t           y u i o p [ ] 
+  caps  a s d f g           h j k l ; ' ret
+  lsft  z x c v b           n m , . / rsft
+  lctl lmet lalt     spc    ralt rmet rctl
+  del home end
+)
+(deflayer name
+  _    _ _ _ _ _ _   _ _ _ _ _ _
+  _    _ _ _ _ _ _   _ _ _ _ _ _ _
+  _    _ _ _ _ _     _ _ _ _ _ _ _
+  _    _ _ _ _ _     _ _ _ _ _ _ _
+  _    _ _ _ _ _     _ _ _ _ _ _ 
+  _ _ _           _        _ _ _
+  _ _ _
+)
+(deflayer no-name
+  XX   XX XX XX XX XX XX   XX XX XX XX XX XX
+  XX   XX XX XX XX XX XX   XX XX XX XX XX XX XX
+  XX   XX XX XX XX XX      XX XX XX XX XX XX XX
+  XX   XX XX XX XX XX      XX XX XX XX XX XX XX
+  XX   XX XX XX XX XX      XX XX XX XX XX XX 
+  XX XX XX             XX           XX XX XX
+  XX XX XX
+)
+|#
