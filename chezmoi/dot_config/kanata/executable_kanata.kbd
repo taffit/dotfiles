@@ -151,7 +151,7 @@
   @win-tab XX @cwrdt XX XX XX    home C-left C-right end XX XX XX
   XX       XX XX XX XX @center-cursor       left down up right XX XX _
   _        @undo @cut @copy @paste-plain XX    @chng-win XX XX @middot XX _ 
-  _ _ _                      _                     _ _ _
+  _ _ _                      _                     caps _ _
   _ _ _
 )
 
