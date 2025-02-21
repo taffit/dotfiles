@@ -56,6 +56,9 @@
 (deftemplate tapholdpresslayer (key layer-if-pressed)
   (tap-hold-press 200 200 $key (layer-while-held $layer-if-pressed))
 )
+(deftemplate tapholdreleaselayer (key layer-if-released)
+  (tap-hold-release 200 200 $key (layer-while-held $layer-if-released))
+)
 (deftemplate runscript (script)
   (cmd (concat "./scripts/" $script ".exe"))
 )
@@ -65,35 +68,74 @@
     () (tap-hold-release-timeout 200 500 $char $mod $char) break
   )
 )
+;; Home row mods
+;; Another way by @dreamsofcode:
+;;   a (multi f24 (tap-hold 150 200 a lmet))
+
+;; From https://github.com/jtroo/kanata/blob/main/cfg_samples/home-row-mod-advanced.kbd
+;; taking into account the pressing of keys on the other side, which should activate hold-action earlier
+;;   tap (multi
+;;    (layer-switch nomods)
+;;    (on-idle-fakekey to-base tap 20)
+;;   )
+;;   a (tap-hold-release-keys $tap-time $hold-time (multi a @tap) lmet $left-hand-keys)
+
+;; From @gerhard-h at https://github.com/jtroo/kanata/discussions/1455
 (deftemplate homerowmod (timeouthold char mod)
   (switch 
     ((key-timing 3 less-than 140)) $char break
     () (tap-hold-release 0 $timeouthold $char $mod) break
   )
 )
+;; More from @gerhard-h at https://github.com/gerhard-h/kmonad-keymaps/
+
+;; From https://github.com/jtroo/kanata/discussions/1455
+;;(deftemplate charmod (char mod)
+;;  (switch 
+;;    ((key-timing 3 less-than 450)) $char break
+;;    () (tap-hold-release-timeout 200 500 $char $mod $char) break
+;;  )
+;;)
+
+;; From https://github.com/argenkiwi/kenkyo/
+;;(deftemplate charmod (char mod)
+;;  (switch 
+;;    ((key-timing 3 less-than 375)) $char break
+;;    () (tap-hold-release-timeout 200 500 $char $mod $char) break
+;;  )
+;;)
 
 ;; Ideas:
-;; - Something like "boss-key", i. e. a layer, where everything works normally
+;; - Something like "boss-key", i. e. a layer, where everything works normally to switch to constantly.
 
 (defalias
   del-word (macro C-S-left bspc)
-  del-bspc (fork del @del-word (lsft rsft))
-  bspc-or-word (fork bspc @del-word (lmet rmet ralt))
+  del-bspc (fork del @del-word (lsft rsft d k))
+  bspc-or-word (fork bspc @del-word (lmet rmet ralt d k))
+  bspc-or-del (fork bspc del (lmet rmet ralt d k))
   middot (macro (unicode ·))
-  a (t! homerowmod $ht a lmet)
-  s (t! homerowmod $ht s lalt)
-  d (t! homerowmod $ht d lsft)
-  f (t! homerowmod $ht f lctl)
-  j (t! homerowmod $ht j rctl)
-  k (t! homerowmod $ht k rsft)
-  l (t! homerowmod $ht l ralt)
-  ; (t! homerowmod $ht ; rmet)
+  ;;a (t! homerowmod $ht a lmet)
+  ;;s (t! homerowmod $ht s lalt)
+  ;;d (t! homerowmod $ht d lsft)
+  ;;f (t! homerowmod $ht f lctl)
+  ;;j (t! homerowmod $ht j rctl)
+  ;;k (t! homerowmod $ht k rsft)
+  ;;l (t! homerowmod $ht l ralt)
+  ;;; (t! homerowmod $ht ; rmet)
+  ;;a (t! charmod a lmet)
+  ;;s (t! charmod s lalt)
+  ;;d (t! charmod d lsft)
+  ;;f (t! charmod f lctl)
+  ;;j (t! charmod j rctl)
+  ;;k (t! charmod k rsft)
+  ;;l (t! charmod l ralt)
+  ;;; (t! charmod ; rmet)
   * S-8
   + S-=
   cwrd (caps-word 2000)
   cwrdt (caps-word-custom-toggle
     2000
-    (a b c d e f g h i j k l m n o p q r s t u v w x y z - ')
+    (a b c d e f g h i j k l m n o p q r s t u v w x y z)
     (0 1 2 3 4 5 6 7 8 9 0 kp0 kp1 kp2 kp3 kp4 kp5 kp6 kp7 kp8 kp9 bspc del up down left rght)
   )
   paste-plain (fork (t! runscript paste_plain) (t! runscript paste_plain_type) (lsft rsft))
@@ -111,6 +153,25 @@
   grv-mod (t! tapholdpresslayer grv grv-layer)
   ;;win-mod (t! tapholdpresslayer lmet win-layer)
   ;;altgr-mod (t! tapholdpresslayer ralt altgr-layer)
+)
+
+(deffakekeys
+  to-default (layer-switch default)
+)
+(defalias
+  tap (multi
+    (layer-switch nomods)
+    (on-idle-fakekey to-default tap 20)
+  )
+
+  a (tap-hold-release-keys $tap-time $hold-time (multi a @tap) lmet $left-hand-keys)
+  s (tap-hold-release-keys $tap-time $hold-time (multi s @tap) lalt $left-hand-keys)
+  d (tap-hold-release-keys $tap-time $hold-time (multi d @tap) lsft $left-hand-keys)
+  f (tap-hold-release-keys $tap-time $hold-time (multi f @tap) lctl $left-hand-keys)
+  j (tap-hold-release-keys $tap-time $hold-time (multi j @tap) rctl $right-hand-keys)
+  k (tap-hold-release-keys $tap-time $hold-time (multi k @tap) rsft $right-hand-keys)
+  l (tap-hold-release-keys $tap-time $hold-time (multi l @tap) ralt $right-hand-keys)
+  ; (tap-hold-release-keys $tap-time $hold-time (multi ; @tap) rmet $right-hand-keys)
 )
 
 ;; Wrapping a top-level configuration item in a list beginning without
@@ -137,7 +198,7 @@
 
 (deflayer default
   esc       f1 f2 f3 f4 f5 f6        f7 f8 f9 f10 f11 f12
-  @grv-mod  1  2  3  4  5  6         7  8  9  0   -   =  @bspc-or-word
+  @grv-mod  1  2  3  4  5  6         7  8  9  0   -   =  @bspc-or-del
   tab       q  w  e  r  t            y u i o p [ ]
   @caps-mod @a @s @d @f g            h @j @k @l @; ' ret
   lsft      z x c v b                n m , . / rsft
@@ -145,9 +206,19 @@
   del home end
 )
 
+(deflayer nomods
+  esc f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
+  grv 1 2 3 4 5 6 7 8 9 0 - = bspc
+  tab q w e r t y u i o p [ ] 
+  caps a s d f g h j k l ; ' ret
+  lsft z x c v b n m , . / rsft
+  lctl lmet lalt spc ralt rmet rctl
+  del home end
+)
+
 (deflayer caps-layer 
   lrld     XX XX XX XX XX XX    XX XX XX XX XX XX
-  lrld     XX XX XX XX XX XX    XX XX XX XX @volume-down @volume-up @del-bspc
+  lrld     XX XX XX XX XX XX    XX XX XX XX @volume-down @volume-up @del-word
   @win-tab XX @cwrdt XX XX XX    home C-left C-right end XX XX XX
   XX       XX XX XX XX @center-cursor       left down up right XX XX _
   _        @undo @cut @copy @paste-plain XX    @chng-win XX XX @middot XX _ 
