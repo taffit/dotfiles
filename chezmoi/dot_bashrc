@@ -126,9 +126,9 @@ eval "$(~/.local/bin/mise activate bash)"
 # See: https://mise.jdx.dev/troubleshooting.html#mise-isn-t-working-when-calling-from-tmux-or-another-shell-initialization-script
 eval "$(mise hook-env)"
 
-# Activating ajeetdsouza/zoxide
-eval "$(zoxide init bash)"
-
 # Activating starship.rs
 eval "$(starship init bash)"
+
+# Activating ajeetdsouza/zoxide
+eval "$(zoxide init bash)"
 
