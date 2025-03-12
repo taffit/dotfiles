@@ -13,12 +13,13 @@
   notify-error            	yes  	;;|yes|
   danger-enable-cmd yes
   windows-altgr add-lctl-release
+  concurrent-tap-hold yes   ;; for chords
 )
 
 (defvar
   tap-time 150
   longer-tap-time 200
-  hold-time 250
+  hold-time 200
   longer-hold-time 300
   tt $tap-time
   ltt $longer-tap-time
@@ -107,12 +108,19 @@
 
 ;; Ideas:
 ;; - Something like "boss-key", i. e. a layer, where everything works normally to switch to constantly.
+;;   See also the now-included fake-key to-default.
+;; + Delete-forward-a-word, e. g. on caps-shift-backspace. Should be easily doable. Note, that somehow Ctrl-Backspace does this. Why? Power Toys? Autohotkey?
+;; - Optimize home row mod using different timeouts, e. g. "angehalten" written quickly will lock the client (a -> l)
+;; + Explore the possibilities using two keys pressed at the same time, e. g. to have a second possibility for Esc
+;;   -> (s d) del word bckwrd, (d f) del word forward, (s f) del, (w e) Caps word, (f g) esc, (q t) default layer
+;; + Switch to normal layer somehow, if anything breaks -> (q t)
 
 (defalias
   del-word (macro C-S-left bspc)
+  del-word-fwd (macro C-S-right bspc)
   del-bspc (fork del @del-word (lsft rsft d k))
-  bspc-or-word (fork bspc @del-word (lmet rmet ralt d k))
-  bspc-or-del (fork bspc del (lmet rmet ralt d k))
+  bspc-or-word (fork bspc @del-word (lsft rsft d k))
+  bspc-or-del (fork bspc (unshift del) (lsft rsft lmet rmet lctl rctl d k))
   middot (macro (unicode ·))
   ;;a (t! homerowmod $ht a lmet)
   ;;s (t! homerowmod $ht s lalt)
@@ -234,6 +242,15 @@
   XX   XX XX XX XX XX      XX 1  2  3  . XX 
   XX XX XX             _           XX XX XX
   XX XX XX
+)
+
+(defchordsv2
+  (w e) @cwrdt 50 all-released ()
+  (d f) @del-word-fwd 50 all-released ()
+  (s d) @del-word 50 all-released ()
+  (s f) del 50 all-released ()
+  (f g) esc 50 all-released ()
+  (q t) (layer-switch default) 50 all-released ()
 )
 
 #|
