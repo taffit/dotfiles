@@ -14,6 +14,7 @@
   danger-enable-cmd yes
   windows-altgr add-lctl-release
   concurrent-tap-hold yes   ;; for chords
+  sequence-input-mode visible-backspaced
 )
 
 (defvar
@@ -84,7 +85,7 @@
 ;; From @gerhard-h at https://github.com/jtroo/kanata/discussions/1455
 (deftemplate homerowmod (timeouthold char mod)
   (switch 
-    ((key-timing 3 less-than 140)) $char break
+    ((key-timing 3 less-than 180)) $char break
     () (tap-hold-release 0 $timeouthold $char $mod) break
   )
 )
@@ -114,6 +115,8 @@
 ;; + Explore the possibilities using two keys pressed at the same time, e. g. to have a second possibility for Esc
 ;;   -> (s d) del word bckwrd, (d f) del word forward, (s f) del, (w e) Caps word, (f g) esc, (q t) default layer
 ;; + Switch to normal layer somehow, if anything breaks -> (q t)
+;; - Possibility to add unicode-characters by code like ;u; using ahk
+;; - Explore the possibility to add activation strings like ;u;
 
 (defalias
   del-word (macro C-S-left bspc)
@@ -208,7 +211,7 @@
   esc       f1 f2 f3 f4 f5 f6        f7 f8 f9 f10 f11 f12
   @grv-mod  1  2  3  4  5  6         7  8  9  0   -   =  @bspc-or-del
   tab       q  w  e  r  t            y u i o p [ ]
-  @caps-mod @a @s @d @f g            h @j @k @l @; ' ret
+  @caps-mod a s @d f g               h @j @k @l ; ' ret
   lsft      z x c v b                n m , . / rsft
   lctl lmet lalt           spc       ralt rmet rctl
   del home end
@@ -245,13 +248,30 @@
 )
 
 (defchordsv2
-  (w e) @cwrdt 50 all-released ()
+  (w r) @cwrdt 50 all-released ()
   (d f) @del-word-fwd 50 all-released ()
   (s d) @del-word 50 all-released ()
   (s f) del 50 all-released ()
+  (a f) bspc 50 all-released ()
   (f g) esc 50 all-released ()
   (q t) (layer-switch default) 50 all-released ()
 )
+
+
+;;(deftemplate seq (vk-name input-keys output-action)
+;;    (defvirtualkeys $vk-name $output-action)
+;;    (defseq $vk-name $input-keys)
+;;)
+;; template-expand has a shortened form: t!
+;;(t! seq dotcom (nop0 nop1) (macro . c o m))
+;;(defseq
+;;  git-status (g s t)
+;;  dotcom (. S-c)
+;;)
+;;(defvirtualkeys
+;;  git-status (unshift (macro g i t spc s t a t u s))
+;;  dotcom (unshift (macro . c o m))
+;;)
 
 #|
 (deflayer win-layer
