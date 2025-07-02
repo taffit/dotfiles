@@ -24,6 +24,7 @@ node = "latest"
 pandoc = "latest"
 python = ["3.12"]
 ripgrep = "latest"
+"aqua:astral-sh/ruff" = "latest"
 starship = "latest"
 tmux = "latest"
 uv = "latest"
