@@ -1,7 +1,7 @@
 return { 
   "nvim-treesitter/nvim-treesitter",
   config = function()
-    require'nvim-treesitter.configs'.setup {
+    require'nvim-treesitter.config'.setup {
       -- A list of parser names, or "all"
       -- Will be checked during startup!
       ensure_installed = {
