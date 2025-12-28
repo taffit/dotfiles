@@ -1,5 +1,7 @@
 {{/* Pre-setting some configuration (and finding out what's possible) */}}
+{{/* Finding out which data is available by running: chezmoi data */}}
 {{- $email := promptStringOnce . "email" "Email address" -}}
+{{- $github_user := promptStringOnce . "github_user" "Github username" -}}
 {{- $work := false -}}{{/* true for work computer */}}
 {{- $hostname := .chezmoi.hostname -}}
 {{/* To test if the sprig-function works as well */}}
@@ -10,6 +12,7 @@
 
 data:
   email: {{ $email | quote }}
+  github_user: {{ $github_user | quote }}
   work: {{ $work }}
   hostname: {{ $hostname }}
 
