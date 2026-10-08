@@ -1,0 +1,13 @@
+# Local-only and generated files
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+
+# Chezmoi local data and secrets
+.chezmoidata.local.*
+chezmoi.local.*
+
+# mise local overrides
+mise.local.toml
+mise.local.lock

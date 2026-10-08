@@ -1,0 +1,13 @@
+README.md
+LICENSE
+.editorconfig
+.gitignore
+
+{{- if .isWindows }}
+.bashrc
+.zshrc
+.config/fish
+.config/shell
+{{- else }}
+Documents
+{{- end }}

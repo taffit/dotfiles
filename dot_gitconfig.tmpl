@@ -1,0 +1,28 @@
+[user]
+    name = {{ .gitName | quote }}
+    email = {{ .gitEmail | quote }}
+
+[github]
+    user = {{ .gitUsername | quote }}
+
+[init]
+    defaultBranch = main
+
+[fetch]
+    prune = true
+    pruneTags = true
+
+[pull]
+    ff = only
+
+[rebase]
+    autoStash = true
+
+[core]
+    autocrlf = {{ if .isWindows }}true{{ else }}input{{ end }}
+
+[diff]
+    algorithm = histogram
+
+[merge]
+    conflictStyle = zdiff3

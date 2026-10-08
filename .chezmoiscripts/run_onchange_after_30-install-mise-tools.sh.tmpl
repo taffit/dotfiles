@@ -1,0 +1,16 @@
+{{- if and (not .isWindows) .installMiseTools -}}
+#!/bin/sh
+set -eu
+# mise config template checksum: {{ include "dot_config/mise/config.toml.tmpl" | sha256sum }}
+
+if [ -x "$HOME/.local/bin/mise" ]; then
+    mise_bin="$HOME/.local/bin/mise"
+elif command -v mise >/dev/null 2>&1; then
+    mise_bin="$(command -v mise)"
+else
+    printf '%s\n' "mise is not available." >&2
+    exit 1
+fi
+
+MISE_GLOBAL_CONFIG_FILE="$HOME/.config/mise/config.toml" "$mise_bin" install
+{{- end }}

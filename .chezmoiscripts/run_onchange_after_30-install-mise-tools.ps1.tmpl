@@ -1,0 +1,16 @@
+{{- if and .isWindows .installMiseTools -}}
+$ErrorActionPreference = "Stop"
+# mise config template checksum: {{ include "dot_config/mise/config.toml.tmpl" | sha256sum }}
+
+$wingetLinks = Join-Path $env:LOCALAPPDATA "Microsoft\WinGet\Links"
+if (Test-Path $wingetLinks) {
+    $env:Path = "$wingetLinks;$env:Path"
+}
+
+if (-not (Get-Command mise -ErrorAction SilentlyContinue)) {
+    throw "mise is not available. Start a new PowerShell session and run chezmoi apply again."
+}
+
+$env:MISE_GLOBAL_CONFIG_FILE = Join-Path $HOME ".config/mise/config.toml"
+mise install
+{{- end }}

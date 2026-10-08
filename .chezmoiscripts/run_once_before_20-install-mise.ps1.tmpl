@@ -1,0 +1,23 @@
+{{- if .isWindows -}}
+$ErrorActionPreference = "Stop"
+
+if (Get-Command mise -ErrorAction SilentlyContinue) {
+    exit 0
+}
+
+if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+    throw "winget is required to install mise on Windows."
+}
+
+winget install --id jdx.mise --exact --accept-source-agreements --accept-package-agreements
+$wingetLinks = Join-Path $env:LOCALAPPDATA "Microsoft\WinGet\Links"
+if (Test-Path $wingetLinks) {
+    $env:Path = "$wingetLinks;$env:Path"
+}
+
+if (-not (Get-Command mise -ErrorAction SilentlyContinue)) {
+    throw "mise was installed but is not available in the current PowerShell session. Start a new shell and run chezmoi apply again."
+}
+
+mise --version
+{{- end }}

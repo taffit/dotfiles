@@ -1,0 +1,46 @@
+# Managed by chezmoi.
+if status is-interactive
+    set -gx EDITOR nvim
+    set -gx VISUAL nvim
+    set -gx PAGER less
+    set -gx DOTFILES_PLATFORM {{ .platform | quote }}
+    set -gx DOTFILES_MACHINE_ROLE {{ .machineRole | quote }}
+{{- if .isWSL }}
+    set -gx DOTFILES_WSL 1
+    if type -q wslview
+        set -gx BROWSER wslview
+    end
+{{- end }}
+
+    abbr --add .. 'cd ..'
+    abbr --add ... 'cd ../..'
+    abbr --add ll 'ls -alF'
+    abbr --add cm chezmoi
+    abbr --add cma 'chezmoi apply'
+    abbr --add cmdiff 'chezmoi diff'
+    abbr --add cmstatus 'chezmoi status'
+    abbr --add cmupdate 'chezmoi update'
+    abbr --add g git
+    abbr --add gst 'git status --short --branch'
+    abbr --add v nvim
+
+    set -l mise_bin
+    if test -x "$HOME/.local/bin/mise"
+        set mise_bin "$HOME/.local/bin/mise"
+    else if type -q mise
+        set mise_bin (command -s mise)
+    end
+
+    if test -n "$mise_bin"
+        $mise_bin activate fish | source
+        $mise_bin hook-env -s fish | source
+    end
+
+    if type -q starship
+        starship init fish | source
+    end
+
+    if type -q zoxide
+        zoxide init fish | source
+    end
+end

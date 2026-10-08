@@ -1,0 +1,17 @@
+{{- if and (not .isWindows) .installSystemPackages -}}
+#!/bin/sh
+set -eu
+
+if command -v pacman >/dev/null 2>&1; then
+    sudo pacman -S --needed --noconfirm fish zsh curl git
+elif command -v apt-get >/dev/null 2>&1; then
+    sudo apt-get update
+    sudo apt-get install -y fish zsh curl git
+elif command -v dnf >/dev/null 2>&1; then
+    sudo dnf install -y fish zsh curl git
+elif command -v zypper >/dev/null 2>&1; then
+    sudo zypper --non-interactive install fish zsh curl git
+else
+    printf '%s\n' "No supported package manager found; install fish, zsh, curl, and git manually." >&2
+fi
+{{- end }}

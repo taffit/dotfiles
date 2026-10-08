@@ -1,0 +1,48 @@
+{{- $gitName := promptStringOnce . "gitName" "Git display name" .chezmoi.username -}}
+{{- $gitEmail := promptStringOnce . "gitEmail" "Git email address" -}}
+{{- $gitUsername := promptStringOnce . "gitUsername" "Git hosting username" .chezmoi.username -}}
+{{- $machineRole := promptChoiceOnce . "machineRole" "Machine role" (list "personal" "work" "server") "personal" -}}
+
+{{- $detectedPlatform := .chezmoi.os -}}
+{{- if eq .chezmoi.os "linux" -}}
+  {{- $kernelRelease := "" -}}
+  {{- if hasKey .chezmoi.kernel "osrelease" -}}
+    {{- $kernelRelease = lower .chezmoi.kernel.osrelease -}}
+  {{- end -}}
+  {{- if contains "microsoft" $kernelRelease -}}
+    {{- $detectedPlatform = "wsl" -}}
+  {{- else if and (hasKey .chezmoi.osRelease "id") (eq .chezmoi.osRelease.id "arch") -}}
+    {{- $detectedPlatform = "arch" -}}
+  {{- else -}}
+    {{- $detectedPlatform = "linux" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $platform := promptChoiceOnce . "platform" "Platform profile" (list "linux" "arch" "wsl" "windows") $detectedPlatform -}}
+{{- $installSystemPackages := false -}}
+{{- $setFishAsDefault := false -}}
+{{- if ne $platform "windows" -}}
+  {{- $installSystemPackages = promptBoolOnce . "installSystemPackages" "Install required system packages (fish, zsh, curl, git)" true -}}
+  {{- $setFishAsDefault = promptBoolOnce . "setFishAsDefault" "Set fish as the default login shell" true -}}
+{{- end -}}
+{{- $installMiseTools := promptBoolOnce . "installMiseTools" "Install tools declared in the global mise config" true -}}
+
+[data]
+gitName = {{ $gitName | quote }}
+gitEmail = {{ $gitEmail | quote }}
+gitUsername = {{ $gitUsername | quote }}
+machineRole = {{ $machineRole | quote }}
+platform = {{ $platform | quote }}
+isWindows = {{ eq $platform "windows" }}
+isWSL = {{ eq $platform "wsl" }}
+isArch = {{ eq $platform "arch" }}
+preferredShell = "fish"
+installSystemPackages = {{ $installSystemPackages }}
+setFishAsDefault = {{ $setFishAsDefault }}
+installMiseTools = {{ $installMiseTools }}
+
+[diff]
+exclude = ["scripts"]
+
+[status]
+exclude = ["scripts"]

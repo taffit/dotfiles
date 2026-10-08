@@ -1,0 +1,31 @@
+# Managed by chezmoi.
+[ -r "$HOME/.config/shell/env.sh" ] && source "$HOME/.config/shell/env.sh"
+[ -r "$HOME/.config/shell/aliases.sh" ] && source "$HOME/.config/shell/aliases.sh"
+
+setopt AUTO_CD
+setopt HIST_IGNORE_ALL_DUPS
+setopt SHARE_HISTORY
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000
+SAVEHIST=10000
+
+_mise_bin=""
+if [ -x "$HOME/.local/bin/mise" ]; then
+    _mise_bin="$HOME/.local/bin/mise"
+elif (( $+commands[mise] )); then
+    _mise_bin="${commands[mise]}"
+fi
+
+if [ -n "$_mise_bin" ]; then
+    eval "$("$_mise_bin" activate zsh)"
+    eval "$("$_mise_bin" hook-env -s zsh)"
+fi
+unset _mise_bin
+
+if (( $+commands[starship] )); then
+    eval "$(starship init zsh)"
+fi
+
+if (( $+commands[zoxide] )); then
+    eval "$(zoxide init zsh)"
+fi

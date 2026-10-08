@@ -1,0 +1,16 @@
+{{- if not .isWindows -}}
+#!/bin/sh
+set -eu
+
+if command -v mise >/dev/null 2>&1 || [ -x "$HOME/.local/bin/mise" ]; then
+    exit 0
+fi
+
+if ! command -v curl >/dev/null 2>&1; then
+    printf '%s\n' "curl is required to install mise." >&2
+    exit 1
+fi
+
+curl https://mise.run | sh
+"$HOME/.local/bin/mise" --version
+{{- end }}

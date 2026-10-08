@@ -1,0 +1,31 @@
+[env]
+EDITOR = "nvim"
+VISUAL = "nvim"
+DOTFILES_PLATFORM = {{ .platform | quote }}
+DOTFILES_MACHINE_ROLE = {{ .machineRole | quote }}
+
+[tools]
+"aqua:sharkdp/bat" = "latest"
+bottom = "latest"
+difftastic = "latest"
+fd = "latest"
+fzf = "latest"
+go = "latest"
+java = "temurin"
+lazygit = "latest"
+"aqua:neovim/neovim" = "latest"
+node = "lts"
+python = "latest"
+ripgrep = "latest"
+rust = "stable"
+starship = "latest"
+uv = "latest"
+zellij = "latest"
+zoxide = "latest"
+{{- if not .isWindows }}
+tmux = "latest"
+{{- end }}
+
+[settings]
+status = { missing_tools = "if_other_versions_installed", show_env = false, show_tools = false }
+python.uv_venv_create_args = ["--seed"]

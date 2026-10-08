@@ -1,0 +1,29 @@
+# Managed by chezmoi.
+case $- in
+    *i*) ;;
+    *) return ;;
+esac
+
+[ -r "$HOME/.config/shell/env.sh" ] && . "$HOME/.config/shell/env.sh"
+[ -r "$HOME/.config/shell/aliases.sh" ] && . "$HOME/.config/shell/aliases.sh"
+
+_mise_bin=""
+if [ -x "$HOME/.local/bin/mise" ]; then
+    _mise_bin="$HOME/.local/bin/mise"
+elif command -v mise >/dev/null 2>&1; then
+    _mise_bin="$(command -v mise)"
+fi
+
+if [ -n "$_mise_bin" ]; then
+    eval "$("$_mise_bin" activate bash)"
+    eval "$("$_mise_bin" hook-env -s bash)"
+fi
+unset _mise_bin
+
+if command -v starship >/dev/null 2>&1; then
+    eval "$(starship init bash)"
+fi
+
+if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init bash)"
+fi
