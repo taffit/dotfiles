@@ -1,33 +1,24 @@
 #!/usr/bin/env sh
 set -eu
 
-target="${1:?usage: switch-tab TAB_NUMBER}"
+target="${1:?usage: switch-tab TAB_ORDINAL}"
 case "$target" in
   1|2|3|4|5|6|7|8|9) ;;
-  *) echo "switch-tab: expected tab number 1-9" >&2; exit 2 ;;
+  *) echo "switch-tab: expected tab ordinal 1-9" >&2; exit 2 ;;
 esac
 
 snapshot_json="$(herdr api snapshot)"
 workspace_id="$(printf '%s' "$snapshot_json" | python3 -c 'import json,sys; print(json.load(sys.stdin)["result"]["snapshot"]["focused_workspace_id"])')"
 
-focus_or_create() {
-  tabs_json="$(herdr tab list --workspace "$workspace_id")"
-  tab_id="$(printf '%s' "$tabs_json" | python3 -c 'import json,sys; n=int(sys.argv[1]); tabs=json.load(sys.stdin)["result"]["tabs"]; print(next((t["tab_id"] for t in tabs if t.get("number") == n), ""))' "$target")"
-  if [ -n "$tab_id" ]; then
-    herdr tab focus "$tab_id" >/dev/null
-    return 0
-  fi
-  return 1
-}
+# Herdr tab numbers are stable IDs and may have gaps after tabs are closed.
+# Treat Alt+a/s/d/f as ordinal positions in the current sorted tab list.
+tabs_json="$(herdr tab list --workspace "$workspace_id")"
+tab_id="$(printf '%s' "$tabs_json" | python3 -c 'import json,sys; n=int(sys.argv[1]); tabs=sorted(json.load(sys.stdin)["result"]["tabs"], key=lambda t: t.get("number", 0)); print(tabs[n-1]["tab_id"] if len(tabs) >= n else "")' "$target")"
 
-if focus_or_create; then
+if [ -n "$tab_id" ]; then
+  herdr tab focus "$tab_id" >/dev/null
   exit 0
 fi
 
-while :; do
-  herdr tab create --workspace "$workspace_id" --focus >/dev/null
-  if focus_or_create; then
-    exit 0
-  fi
-
-done
+created_json="$(herdr tab create --workspace "$workspace_id" --focus)"
+printf '%s' "$created_json" | python3 -c 'import json,sys; data=json.load(sys.stdin); assert data["result"]["tab"]["tab_id"]'
