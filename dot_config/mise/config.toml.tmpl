@@ -11,6 +11,10 @@ difftastic = "latest"
 fd = "latest"
 fzf = "latest"
 go = "latest"
+{{- if not .isWindows }}
+herdr = "latest"
+{{- end }}
+"github:jarun/nnn" = { version = "latest", rename_exe = "nnn" }
 java = "temurin"
 lazygit = "latest"
 "aqua:neovim/neovim" = "latest"

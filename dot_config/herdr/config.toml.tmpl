@@ -1,0 +1,50 @@
+onboarding = false
+
+[theme]
+name = "catppuccin"
+auto_switch = false
+
+[keys]
+prefix = "ctrl+space"
+
+# Prefix-mode pane splits, mirroring the old tmux muscle memory.
+split_vertical = ["prefix+v", "prefix+|", "prefix+backslash"]
+split_horizontal = ["prefix+h", "prefix+minus", "prefix+shift+minus"]
+focus_pane_left = ""
+focus_pane_down = ""
+focus_pane_up = ""
+focus_pane_right = ""
+
+# Direct pane navigation.
+last_pane = "alt+w"
+cycle_pane_next = "alt+j"
+cycle_pane_previous = "alt+k"
+close_pane = "alt+x"
+
+# Direct tab navigation.
+next_tab = "alt+shift+j"
+previous_tab = "alt+shift+k"
+
+# Letter-based tab switching/creation.
+[[keys.command]]
+key = "alt+a"
+type = "shell"
+command = "$HOME/.config/herdr/bin/switch-tab 1"
+
+[[keys.command]]
+key = "alt+s"
+type = "shell"
+command = "$HOME/.config/herdr/bin/switch-tab 2"
+
+[[keys.command]]
+key = "alt+d"
+type = "shell"
+command = "$HOME/.config/herdr/bin/switch-tab 3"
+
+[[keys.command]]
+key = "alt+f"
+type = "shell"
+command = "$HOME/.config/herdr/bin/switch-tab 4"
+
+[ui]
+confirm_close = true

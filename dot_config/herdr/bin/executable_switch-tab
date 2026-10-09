@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+set -eu
+
+target="${1:?usage: switch-tab TAB_NUMBER}"
+case "$target" in
+  1|2|3|4|5|6|7|8|9) ;;
+  *) echo "switch-tab: expected tab number 1-9" >&2; exit 2 ;;
+esac
+
+snapshot_json="$(herdr api snapshot)"
+workspace_id="$(printf '%s' "$snapshot_json" | python3 -c 'import json,sys; print(json.load(sys.stdin)["result"]["snapshot"]["focused_workspace_id"])')"
+
+focus_or_create() {
+  tabs_json="$(herdr tab list --workspace "$workspace_id")"
+  tab_id="$(printf '%s' "$tabs_json" | python3 -c 'import json,sys; n=int(sys.argv[1]); tabs=json.load(sys.stdin)["result"]["tabs"]; print(next((t["tab_id"] for t in tabs if t.get("number") == n), ""))' "$target")"
+  if [ -n "$tab_id" ]; then
+    herdr tab focus "$tab_id" >/dev/null
+    return 0
+  fi
+  return 1
+}
+
+if focus_or_create; then
+  exit 0
+fi
+
+while :; do
+  herdr tab create --workspace "$workspace_id" --focus >/dev/null
+  if focus_or_create; then
+    exit 0
+  fi
+
+done

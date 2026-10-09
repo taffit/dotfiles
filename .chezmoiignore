@@ -8,6 +8,7 @@ LICENSE
 .zshrc
 .config/fish
 .config/shell
+.config/herdr
 {{- else }}
 Documents
 {{- end }}
