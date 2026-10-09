@@ -1,21 +1,33 @@
 -- Neovim 0.12 includes vim.pack. Keep third-party plugins minimal and
 -- declare them here only after deciding each one is worth carrying.
-if vim.pack then
-  vim.pack.add({
-    { src = "https://github.com/eddyekofo94/gruvbox-flat.nvim" },
-    { src = "https://github.com/nvim-tree/nvim-web-devicons" },
-    { src = "https://github.com/nvim-lualine/lualine.nvim" },
-    { src = "https://github.com/declancm/maximize.nvim" },
-    { src = "https://github.com/akinsho/toggleterm.nvim" },
-    { src = "https://github.com/nvim-lua/plenary.nvim" },
-    { src = "https://github.com/nvim-telescope/telescope.nvim" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-    { src = "https://github.com/williamboman/mason.nvim" },
-    { src = "https://github.com/neovim/nvim-lspconfig" },
-    { src = "https://github.com/williamboman/mason-lspconfig.nvim" },
-    { src = "https://github.com/luukvbaal/nnn.nvim" },
-  })
+local plugins = {
+  { src = "https://github.com/eddyekofo94/gruvbox-flat.nvim" },
+  { src = "https://github.com/nvim-tree/nvim-web-devicons" },
+  { src = "https://github.com/nvim-lualine/lualine.nvim" },
+  { src = "https://github.com/declancm/maximize.nvim" },
+  { src = "https://github.com/akinsho/toggleterm.nvim" },
+  { src = "https://github.com/nvim-lua/plenary.nvim" },
+  { src = "https://github.com/nvim-telescope/telescope.nvim" },
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+  { src = "https://github.com/williamboman/mason.nvim" },
+  { src = "https://github.com/neovim/nvim-lspconfig" },
+  { src = "https://github.com/williamboman/mason-lspconfig.nvim" },
+  { src = "https://github.com/luukvbaal/nnn.nvim" },
+}
+
+if not vim.pack then
+  error("This Neovim config requires Neovim 0.12 or newer because it uses vim.pack")
 end
+
+vim.pack.add(plugins)
+
+vim.api.nvim_create_user_command("PackUpdate", function()
+  vim.pack.update()
+end, { desc = "Update vim.pack plugins" })
+
+vim.api.nvim_create_user_command("PackUpdateForce", function()
+  vim.pack.update(nil, { force = true })
+end, { desc = "Update vim.pack plugins without confirmation" })
 
 vim.cmd.colorscheme("gruvbox-flat")
 

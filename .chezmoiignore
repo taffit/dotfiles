@@ -10,6 +10,7 @@ HANDOVER.md
 .config/fish
 .config/shell
 .config/herdr
+.local/share/applications
 {{- else }}
 Documents
 {{- end }}
