@@ -13,4 +13,24 @@ if (-not (Get-Command mise -ErrorAction SilentlyContinue)) {
 
 $env:MISE_GLOBAL_CONFIG_FILE = Join-Path $HOME ".config/mise/config.toml"
 mise install
+
+$nvimDataDir = Join-Path $env:LOCALAPPDATA "nvim-data"
+$pythonProviderDir = Join-Path $nvimDataDir "python3-provider"
+mise exec -- uv venv $pythonProviderDir --seed --allow-existing
+$pythonProvider = Join-Path $pythonProviderDir "Scripts/python.exe"
+mise exec -- uv pip install --python $pythonProvider --upgrade pynvim
+mise exec -- npm install --global neovim
+$nodeHostDir = Join-Path $nvimDataDir "node-host"
+$nodePrefix = mise exec -- npm config get prefix
+New-Item -ItemType Directory -Path $nodeHostDir -Force | Out-Null
+$nodeCandidates = @(
+    (Join-Path $nodePrefix "lib/node_modules/neovim/bin/cli.js"),
+    (Join-Path $nodePrefix "node_modules/neovim/bin/cli.js")
+)
+foreach ($candidate in $nodeCandidates) {
+    if (Test-Path $candidate) {
+        Copy-Item -Path $candidate -Destination (Join-Path $nodeHostDir "cli.js") -Force
+        break
+    }
+}
 {{- end }}

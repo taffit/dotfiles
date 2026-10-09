@@ -13,4 +13,19 @@ else
 fi
 
 MISE_GLOBAL_CONFIG_FILE="$HOME/.config/mise/config.toml" "$mise_bin" install
+
+nvim_data_dir="${XDG_DATA_HOME:-$HOME/.local/share}/nvim"
+python_provider_dir="$nvim_data_dir/python3-provider"
+
+MISE_GLOBAL_CONFIG_FILE="$HOME/.config/mise/config.toml" "$mise_bin" exec -- uv venv "$python_provider_dir" --seed --allow-existing
+MISE_GLOBAL_CONFIG_FILE="$HOME/.config/mise/config.toml" "$mise_bin" exec -- uv pip install --python "$python_provider_dir/bin/python" --upgrade pynvim
+MISE_GLOBAL_CONFIG_FILE="$HOME/.config/mise/config.toml" "$mise_bin" exec -- npm install --global neovim
+node_host_dir="$nvim_data_dir/node-host"
+node_prefix="$(MISE_GLOBAL_CONFIG_FILE="$HOME/.config/mise/config.toml" "$mise_bin" exec -- npm config get prefix)"
+mkdir -p "$node_host_dir"
+if [ -f "$node_prefix/lib/node_modules/neovim/bin/cli.js" ]; then
+    ln -sf "$node_prefix/lib/node_modules/neovim/bin/cli.js" "$node_host_dir/cli.js"
+elif [ -f "$node_prefix/node_modules/neovim/bin/cli.js" ]; then
+    ln -sf "$node_prefix/node_modules/neovim/bin/cli.js" "$node_host_dir/cli.js"
+fi
 {{- end }}

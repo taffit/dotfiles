@@ -1,0 +1,5 @@
+require("taffit.options")
+require("taffit.providers")
+require("taffit.keymaps")
+require("taffit.autocmds")
+require("taffit.plugins")

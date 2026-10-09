@@ -2,6 +2,7 @@ README.md
 LICENSE
 .editorconfig
 .gitignore
+HANDOVER.md
 
 {{- if .isWindows }}
 .bashrc
