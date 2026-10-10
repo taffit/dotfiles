@@ -1,47 +1,21 @@
-# Managed by chezmoi.
-if status is-interactive
-    set -gx EDITOR nvim
-    set -gx VISUAL nvim
-    set -gx PAGER less
-    set -gx DOTFILES_PLATFORM {{ .platform | quote }}
-    set -gx DOTFILES_MACHINE_ROLE {{ .machineRole | quote }}
-{{- if .isWSL }}
-    set -gx DOTFILES_WSL 1
-    if type -q wslview
-        set -gx BROWSER wslview
-    end
-{{- end }}
+# Fish shell aliases — kept in sync with Bash/Zsh aliases in
+# ~/.config/shell/aliases.sh.
 
-    abbr --add .. 'cd ..'
-    abbr --add ... 'cd ../..'
-    abbr --add ll 'ls -alF'
-    abbr --add cm chezmoi
-    abbr --add cma 'chezmoi apply'
-    abbr --add cmdiff 'chezmoi diff'
-    abbr --add cmstatus 'chezmoi status'
-    abbr --add cmupdate 'chezmoi update'
-    abbr --add g git
-    abbr --add gst 'git status --short --branch'
-    abbr --add n nnn
-    abbr --add v nvim
+function .. --description 'cd ..'; cd ..; end
+function ... --description 'cd ../..'; cd ../..; end
+function ll --description 'ls -alF'; ls -alF $argv; end
+function la --description 'ls -A'; ls -A $argv; end
+function l --description 'ls -CF'; ls -CF $argv; end
+function cm --description 'chezmoi'; chezmoi $argv; end
+function cma --description 'chezmoi apply'; chezmoi apply $argv; end
+function cmdiff --description 'chezmoi diff'; chezmoi diff $argv; end
+function cmstatus --description 'chezmoi status'; chezmoi status $argv; end
+function cmupdate --description 'chezmoi update'; chezmoi update $argv; end
+function g --description 'git'; git $argv; end
+function gst --description 'git status --short --branch'; git status --short --branch $argv; end
+function gl --description 'git log --oneline --decorate --graph -20'; git log --oneline --decorate --graph -20 $argv; end
+function n --description 'nnn'; nnn $argv; end
+function v --description 'nvim'; nvim $argv; end
 
-    set -l mise_bin
-    if test -x "$HOME/.local/bin/mise"
-        set mise_bin "$HOME/.local/bin/mise"
-    else if type -q mise
-        set mise_bin (command -s mise)
-    end
-
-    if test -n "$mise_bin"
-        $mise_bin activate fish | source
-        $mise_bin hook-env -s fish | source
-    end
-
-    if type -q starship
-        starship init fish | source
-    end
-
-    if type -q zoxide
-        zoxide init fish | source
-    end
-end
+# Restore the old startup screen (default greeting).
+set -g fish_greeting "Welcome to fish, the friendly interactive shell"
