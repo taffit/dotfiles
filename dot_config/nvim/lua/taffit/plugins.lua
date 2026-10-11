@@ -120,9 +120,18 @@ local missing_treesitter_parsers = vim.tbl_filter(function(parser)
   return not installed_treesitter_parsers[parser]
 end, treesitter_languages)
 if #missing_treesitter_parsers > 0 then
-  local install_task = require("nvim-treesitter").install(missing_treesitter_parsers)
-  if #vim.api.nvim_list_uis() == 0 then
-    install_task:wait(300000)
+  if vim.fn.executable("tree-sitter") == 1 then
+    local install_task = require("nvim-treesitter").install(missing_treesitter_parsers)
+    if #vim.api.nvim_list_uis() == 0 then
+      install_task:wait(300000)
+    end
+  else
+    vim.schedule(function()
+      vim.notify(
+        "Tree-sitter parsers were not installed because tree-sitter-cli is not in PATH. Run Neovim through mise or activate mise in your shell.",
+        vim.log.levels.WARN
+      )
+    end)
   end
 end
 

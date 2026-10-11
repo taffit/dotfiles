@@ -2,8 +2,8 @@
 Name=Neovim
 GenericName=Text Editor
 Comment=Edit text files with Neovim
-TryExec={{ .chezmoi.homeDir }}/.local/share/mise/installs/aqua-neovim-neovim/latest/nvim-linux-x86_64/bin/nvim
-Exec={{ .chezmoi.homeDir }}/.local/share/mise/installs/aqua-neovim-neovim/latest/nvim-linux-x86_64/bin/nvim %F
+TryExec=/usr/bin/mise
+Exec=/usr/bin/mise exec -- nvim %F
 Terminal=true
 Type=Application
 Keywords=Text;editor;
