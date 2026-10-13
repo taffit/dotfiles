@@ -1,0 +1,38 @@
+keybinds {
+    shared_except "locked" {
+        // Jump to the requested tab, or create exactly one new tab when it
+        // does not exist yet. The helper pane closes immediately afterwards.
+        bind "Alt a" {
+            Run "zellij-tab-or-new" "1" {
+                close_on_exit true
+                floating true
+            }
+        }
+        bind "Alt s" {
+            Run "zellij-tab-or-new" "2" {
+                close_on_exit true
+                floating true
+            }
+        }
+        bind "Alt d" {
+            Run "zellij-tab-or-new" "3" {
+                close_on_exit true
+                floating true
+            }
+        }
+        bind "Alt f" {
+            Run "zellij-tab-or-new" "4" {
+                close_on_exit true
+                floating true
+            }
+        }
+
+        bind "Alt Shift f" { ToggleFloatingPanes; }
+        bind "Alt e" { ToggleActiveSyncTab; }
+        bind "Alt j" { FocusNextPane; }
+        bind "Alt k" { FocusPreviousPane; }
+        bind "Alt \\" "Alt |" "Alt Shift \\" "Alt v" { NewPane "Right"; }
+        bind "Alt -" "Alt _" "Alt Shift -" "Alt h" { NewPane "Down"; }
+        bind "Alt m" { ToggleFocusFullscreen; }
+    }
+}

@@ -1,0 +1,29 @@
+#!/bin/sh
+set -eu
+
+target=${1:-}
+case "$target" in
+    1|2|3|4) ;;
+    *)
+        printf 'usage: %s TAB_INDEX (1-4)\n' "${0##*/}" >&2
+        exit 2
+        ;;
+esac
+
+if ! command -v zellij >/dev/null 2>&1; then
+    printf '%s\n' "zellij is not available in PATH" >&2
+    exit 127
+fi
+
+if ! command -v python >/dev/null 2>&1; then
+    printf '%s\n' "python is not available in PATH" >&2
+    exit 127
+fi
+
+tab_count=$(zellij action list-tabs --json | python -c 'import json, sys; print(len(json.load(sys.stdin)))')
+
+if [ "$tab_count" -ge "$target" ]; then
+    zellij action go-to-tab "$target"
+else
+    zellij action new-tab --cwd "$PWD" >/dev/null
+fi
