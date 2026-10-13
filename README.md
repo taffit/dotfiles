@@ -68,6 +68,20 @@ Useful commands:
 
 Shell activation is configured for Bash, Zsh, Fish, and PowerShell.
 
+## Windows Terminal multi-line input
+
+On WSL, chezmoi configures Windows Terminal so `Shift+Enter` sends a line feed
+(`Ctrl+J`). This gives Hermes a reliable multi-line shortcut through terminal
+multiplexers such as Herdr, where the outer terminal otherwise cannot distinguish
+`Shift+Enter` from plain `Enter`.
+
+The run-on-change script updates only the named action and the `shift+enter`
+keybinding in the existing Windows Terminal `settings.json`; profiles, themes,
+and other bindings are retained. Before the first rewrite it saves
+`settings.json.chezmoi-backup` beside the original file. The mapping is global
+to Windows Terminal and therefore applies to every profile and nested
+multiplexer.
+
 ## Local configuration
 
 Keep machine-only shell customizations outside the repository:

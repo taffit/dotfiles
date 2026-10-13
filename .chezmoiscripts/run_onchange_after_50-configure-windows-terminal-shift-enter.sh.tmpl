@@ -1,0 +1,145 @@
+{{- if .isWSL -}}
+#!/bin/sh
+set -eu
+
+if [ -x "$HOME/.local/bin/mise" ]; then
+    mise_bin="$HOME/.local/bin/mise"
+elif command -v mise >/dev/null 2>&1; then
+    mise_bin="$(command -v mise)"
+else
+    printf '%s\n' "mise is required to configure Windows Terminal." >&2
+    exit 1
+fi
+
+MISE_GLOBAL_CONFIG_FILE="$HOME/.config/mise/config.toml" "$mise_bin" exec -- python - <<'PY'
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import tempfile
+
+ACTION_ID = "User.ShiftEnterNewline"
+LEGACY_ACTION_ID = "User.ShiftEnterCSIu"
+ACTION = {
+    "command": {"action": "sendInput", "input": "\n"},
+    "id": ACTION_ID,
+}
+KEYBINDING = {"id": ACTION_ID, "keys": "shift+enter"}
+PACKAGE_NAMES = (
+    "Microsoft.WindowsTerminal_8wekyb3d8bbwe",
+    "Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe",
+    "Microsoft.WindowsTerminalCanary_8wekyb3d8bbwe",
+)
+
+
+def local_app_data() -> Path | None:
+    try:
+        completed = subprocess.run(
+            ["cmd.exe", "/d", "/c", "echo", "%LOCALAPPDATA%"],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        windows_path = completed.stdout.strip().replace("\r", "")
+        if windows_path and "%LOCALAPPDATA%" not in windows_path:
+            converted = subprocess.run(
+                ["wslpath", "-u", windows_path],
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=10,
+            ).stdout.strip()
+            if converted:
+                return Path(converted)
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return None
+
+
+def settings_candidates() -> list[Path]:
+    candidates: list[Path] = []
+    app_data = local_app_data()
+    if app_data is not None:
+        candidates.extend(
+            app_data / "Packages" / package / "LocalState" / "settings.json"
+            for package in PACKAGE_NAMES
+        )
+        candidates.append(app_data / "Microsoft" / "Windows Terminal" / "settings.json")
+    else:
+        for user_dir in Path("/mnt/c/Users").glob("*"):
+            base = user_dir / "AppData" / "Local"
+            candidates.extend(
+                base / "Packages" / package / "LocalState" / "settings.json"
+                for package in PACKAGE_NAMES
+            )
+            candidates.append(base / "Microsoft" / "Windows Terminal" / "settings.json")
+    return [path for path in candidates if path.is_file()]
+
+
+def configure(path: Path) -> bool:
+    raw = path.read_text(encoding="utf-8-sig")
+    try:
+        settings = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise SystemExit(f"Cannot update {path}: unsupported JSON/JSONC syntax: {exc}")
+
+    actions = settings.setdefault("actions", [])
+    if not isinstance(actions, list):
+        raise SystemExit(f"Cannot update {path}: 'actions' is not an array")
+    actions[:] = [
+        action
+        for action in actions
+        if not isinstance(action, dict)
+        or action.get("id") not in {ACTION_ID, LEGACY_ACTION_ID}
+    ]
+    actions.append(ACTION)
+
+    keybindings = settings.setdefault("keybindings", [])
+    if not isinstance(keybindings, list):
+        raise SystemExit(f"Cannot update {path}: 'keybindings' is not an array")
+    keybindings[:] = [
+        binding
+        for binding in keybindings
+        if not isinstance(binding, dict)
+        or (
+            binding.get("id") not in {ACTION_ID, LEGACY_ACTION_ID}
+            and binding.get("keys") != "shift+enter"
+        )
+    ]
+    keybindings.append(KEYBINDING)
+
+    rendered = json.dumps(settings, ensure_ascii=False, indent=4) + "\n"
+    if rendered == raw:
+        return False
+
+    backup = path.with_name(path.name + ".chezmoi-backup")
+    if not backup.exists():
+        shutil.copy2(path, backup)
+
+    with tempfile.NamedTemporaryFile(
+        mode="w",
+        encoding="utf-8",
+        newline="\n",
+        dir=path.parent,
+        prefix=path.name + ".",
+        suffix=".tmp",
+        delete=False,
+    ) as handle:
+        handle.write(rendered)
+        temporary = Path(handle.name)
+    os.replace(temporary, path)
+    return True
+
+
+paths = settings_candidates()
+if not paths:
+    print("Windows Terminal settings.json not found; skipping Shift+Enter mapping.")
+else:
+    for settings_path in paths:
+        changed = configure(settings_path)
+        state = "configured" if changed else "already configured"
+        print(f"Windows Terminal Shift+Enter {state}: {settings_path}")
+PY
+{{- end }}
