@@ -1,4 +1,6 @@
 # Managed by chezmoi.
+fish_add_path -g "$HOME/bin" "$HOME/.local/bin"
+
 if status is-interactive
     set -gx EDITOR nvim
     set -gx VISUAL nvim
@@ -16,7 +18,11 @@ if status is-interactive
     alias ...='cd ../..'
     alias ll='ls -alF'
     alias la='ls -A'
-    alias l='ls -CF'
+    if type -q eza
+        alias l='eza -al --color=always --group-directories-first --icons=always'
+    else
+        alias l='ls -als --color=auto --group-directories-first'
+    end
     alias cm='chezmoi'
     alias cma='chezmoi apply'
     alias cmdiff='chezmoi diff'

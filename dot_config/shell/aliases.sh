@@ -3,7 +3,11 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ll='ls -alF'
 alias la='ls -A'
-alias l='ls -CF'
+if command -v eza >/dev/null 2>&1; then
+    alias l='eza -al --color=always --group-directories-first --icons=always'
+else
+    alias l='ls -als --color=auto --group-directories-first'
+fi
 
 alias cm='chezmoi'
 alias cma='chezmoi apply'
