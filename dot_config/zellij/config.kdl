@@ -1,6 +1,6 @@
 keybinds {
     shared_except "locked" {
-        // Ensure tabs up to the requested position exist, then focus it.
+        // Focus the requested position, or create one new tab if it is absent.
         bind "Alt a" {
             Run "zellij-tab-or-new" "1" {
                 close_on_exit true
@@ -33,5 +33,6 @@ keybinds {
         bind "Alt \\" "Alt |" "Alt Shift \\" "Alt v" { NewPane "Right"; }
         bind "Alt -" "Alt _" "Alt Shift -" "Alt h" { NewPane "Down"; }
         bind "Alt m" { ToggleFocusFullscreen; }
+        bind "Alt x" { CloseTab; }
     }
 }
