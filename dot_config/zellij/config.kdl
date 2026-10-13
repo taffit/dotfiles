@@ -1,7 +1,6 @@
 keybinds {
     shared_except "locked" {
-        // Jump to the requested tab, or create exactly one new tab when it
-        // does not exist yet. The helper pane closes immediately afterwards.
+        // Ensure tabs up to the requested position exist, then focus it.
         bind "Alt a" {
             Run "zellij-tab-or-new" "1" {
                 close_on_exit true

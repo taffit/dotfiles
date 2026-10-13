@@ -22,8 +22,9 @@ fi
 
 tab_count=$(zellij action list-tabs --json | python -c 'import json, sys; print(len(json.load(sys.stdin)))')
 
-if [ "$tab_count" -ge "$target" ]; then
-    zellij action go-to-tab "$target"
-else
+while [ "$tab_count" -lt "$target" ]; do
     zellij action new-tab --cwd "$PWD" >/dev/null
-fi
+    tab_count=$((tab_count + 1))
+done
+
+zellij action go-to-tab "$target"

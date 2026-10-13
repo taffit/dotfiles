@@ -73,8 +73,8 @@ Shell activation is configured for Bash, Zsh, Fish, and PowerShell.
 Zellij is installed by mise and reads `~/.config/zellij/config.kdl`.
 The custom shortcuts are available outside Zellij's locked mode:
 
-- `Alt+a/s/d/f`: switch to tab 1/2/3/4; if the requested position does not
-  exist, create exactly one new tab at the end
+- `Alt+a/s/d/f`: open or switch to tab 1/2/3/4; all missing intermediate tabs
+  are created before the requested tab is focused
 - `Alt+Shift+f`: toggle floating panes
 - `Alt+e`: toggle synchronized input for all panes in the active tab
 - `Alt+j/k`: focus the next/previous pane
@@ -83,9 +83,9 @@ The custom shortcuts are available outside Zellij's locked mode:
 - `Alt+m`: toggle fullscreen for the focused pane
 
 The positional tab behavior is implemented by
-`~/.local/bin/zellij-tab-or-new`. It deliberately counts tabs rather than using
-tab names, so renamed tabs continue to work. When the requested position is
-missing, repeated presses create one tab at a time until it exists.
+`~/.local/bin/zellij-tab-or-new`. It creates every missing tab up to the
+requested position, then focuses that position. Existing tabs are only focused,
+not recreated.
 
 ## Windows Terminal multi-line input
 
