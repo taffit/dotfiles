@@ -1,0 +1,25 @@
+{{- if and (not .isWindows) (not .isWSL) .installSystemPackages -}}
+#!/bin/sh
+set -eu
+
+if command -v pacman >/dev/null 2>&1; then
+    sudo pacman -S --needed --noconfirm \
+        libusb dbus wayland libxkbcommon libx11 libxkbcommon-x11 \
+        libappindicator-gtk3
+elif command -v apt-get >/dev/null 2>&1; then
+    sudo apt-get update
+    sudo apt-get install -y \
+        libusb-1.0-0 libdbus-1-3 libwayland-client0 libxkbcommon0 \
+        libx11-6 libx11-xcb1 libxkbcommon-x11-0 \
+        libayatana-appindicator3-1
+elif command -v dnf >/dev/null 2>&1; then
+    sudo dnf install -y \
+        libusb1 dbus-libs wayland-libs libxkbcommon libX11 \
+        libappindicator-gtk3
+else
+    printf '%s\n' \
+        "No supported package manager found; install the Keymapper runtime dependencies manually." \
+        >&2
+    exit 1
+fi
+{{- end }}

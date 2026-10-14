@@ -1,0 +1,53 @@
+{{- if and (not .isWindows) (not .isWSL) .installMiseTools -}}
+#!/bin/sh
+set -eu
+# mise config template checksum: {{ include "dot_config/mise/config.toml.tmpl" | sha256sum }}
+
+if [ -x "$HOME/.local/bin/mise" ]; then
+    mise_bin="$HOME/.local/bin/mise"
+elif command -v mise >/dev/null 2>&1; then
+    mise_bin="$(command -v mise)"
+else
+    printf '%s\n' "mise is not available." >&2
+    exit 1
+fi
+
+export MISE_GLOBAL_CONFIG_FILE="$HOME/.config/mise/config.toml"
+daemon_source="$($mise_bin which keymapperd)"
+
+if [ ! -x "$daemon_source" ]; then
+    printf '%s\n' "keymapperd was not installed by mise." >&2
+    exit 1
+fi
+
+tmpdir="$(mktemp -d)"
+trap 'rm -rf "$tmpdir"' EXIT HUP INT TERM
+
+cat >"$tmpdir/keymapperd.service" <<'EOF'
+[Unit]
+Description=Keymapper daemon
+After=local-fs.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/libexec/keymapper/keymapperd
+Restart=on-failure
+RestartSec=2s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Keep the root-run executable outside the user-writable mise tree.
+sudo install -d -o root -g root -m 0755 /usr/local/libexec/keymapper
+sudo install -o root -g root -m 0755 "$daemon_source" \
+    /usr/local/libexec/keymapper/keymapperd
+sudo install -o root -g root -m 0644 "$tmpdir/keymapperd.service" \
+    /etc/systemd/system/keymapperd.service
+
+sudo systemctl daemon-reload
+sudo systemctl enable --now keymapperd.service
+sudo systemctl restart keymapperd.service
+sudo systemctl is-enabled --quiet keymapperd.service
+sudo systemctl is-active --quiet keymapperd.service
+{{- end }}

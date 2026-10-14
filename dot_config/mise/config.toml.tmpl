@@ -11,6 +11,9 @@ difftastic = "latest"
 fd = "latest"
 fzf = "latest"
 go = "latest"
+{{- if and (not .isWindows) (not .isWSL) }}
+"github:houmain/keymapper" = "latest"
+{{- end }}
 {{- if not .isWindows }}
 herdr = "latest"
 {{- end }}

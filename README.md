@@ -68,6 +68,22 @@ Useful commands:
 
 Shell activation is configured for Bash, Zsh, Fish, and PowerShell.
 
+## Keymapper
+
+On native Linux, Keymapper is installed from GitHub Releases through mise. Its
+configuration is managed in `~/.config/keymapper` on every platform.
+
+On native Linux, chezmoi installs a root-owned copy of the mise-provided
+`keymapperd` executable and enables `keymapperd.service`. Windows installation
+and daemon setup are intentionally left to the native Windows installer. WSL
+does not install or start Keymapper because it cannot access the Windows host's
+keyboard input devices. A Keymapper instance running on the Windows host still
+affects keyboard input sent to Windows Terminal and WSL sessions.
+
+The client is deliberately not started automatically. Start it when needed:
+
+    keymapper -u
+
 ## Zellij
 
 Zellij is installed by mise and reads `~/.config/zellij/config.kdl`.
