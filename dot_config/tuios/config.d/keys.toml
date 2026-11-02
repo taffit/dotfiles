@@ -1,0 +1,3 @@
+# Use Ctrl+Space as the TUIOS prefix.
+[keybindings]
+leader_key = "ctrl+space"
