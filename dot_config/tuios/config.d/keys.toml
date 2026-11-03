@@ -1,3 +1,40 @@
 # Use Ctrl+Space as the TUIOS prefix.
 [keybindings]
 leader_key = "ctrl+space"
+
+# Fast workspace and pane switching in both window and terminal modes.
+[keybindings.window_management]
+close_window = ["w", "x", "alt+x"]
+focus_sidebar = ["s", "alt+;"]
+next_window = ["tab", "alt+j"]
+prev_window = ["shift+tab", "alt+k"]
+toggle_zoom = ["z", "alt+z"]
+
+[keybindings.workspaces]
+switch_workspace_1 = ["alt+1", "alt+a"]
+switch_workspace_2 = ["alt+2", "alt+s"]
+switch_workspace_3 = ["alt+3", "alt+d"]
+switch_workspace_4 = ["alt+4", "alt+f"]
+
+# Preserve the displaced layout actions on new keys.
+[keybindings.layout]
+preselect_down = ["ctrl+alt+j"]
+preselect_left = ["ctrl+alt+h"]
+preselect_up = ["ctrl+alt+k"]
+
+[keybindings.terminal_mode]
+close_window = ["alt+x"]
+focus_sidebar = ["alt+;"]
+pick_path = ["ctrl+alt+;"]
+switch_workspace_1 = ["alt+a"]
+switch_workspace_2 = ["alt+s"]
+switch_workspace_3 = ["alt+d"]
+switch_workspace_4 = ["alt+f"]
+terminal_next_window = ["alt+n", "alt+j"]
+terminal_prev_window = ["alt+p", "alt+k"]
+toggle_zoom = ["alt+z"]
+
+[keybindings.sidebar]
+collapse = ["h", "left", "alt+k"]
+expand = ["l", "right", "alt+j"]
+exit = ["esc", "s", "alt+h"]
