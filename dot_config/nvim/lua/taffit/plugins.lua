@@ -1,7 +1,7 @@
 -- Neovim 0.12 includes vim.pack. Keep third-party plugins minimal and
 -- declare them here only after deciding each one is worth carrying.
 local plugins = {
-  { src = "https://github.com/eddyekofo94/gruvbox-flat.nvim" },
+  { src = "https://github.com/Mister-Click/gruvbox-flat.nvim" },
   { src = "https://github.com/nvim-tree/nvim-web-devicons" },
   { src = "https://github.com/nvim-lualine/lualine.nvim" },
   { src = "https://github.com/declancm/maximize.nvim" },
