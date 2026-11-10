@@ -1,0 +1,6 @@
+# Open a terminal pane in new empty sessions and workspaces.
+[startup]
+open_default_window = true
+
+[workspaces]
+new_window_when_empty = true
